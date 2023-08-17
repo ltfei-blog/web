@@ -2,15 +2,42 @@
   "name": "nuxt-app",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
+    "preinstall": "npx only-allow yarn",
+    "build": "run-p lint build-only",
+    "build-only": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write src/",
+    "prepare": "husky install",
+    "cz": "git-cz"
+  },
+  "lint-staged": {
+    "*.{vue,js,ts,jsx,tsx,md,json}": "prettier --write",
+    "*.{vue,js,ts,jsx,tsx}": "eslint --fix"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.6.5",
+    "@commitlint/config-angular": "^17.6.5",
+    "@commitlint/cz-commitlint": "^17.5.0",
+    "@vue/eslint-config-prettier": "^7.1.0",
+    "@vue/eslint-config-typescript": "^11.0.3",
+    "@rushstack/eslint-patch": "^1.2.0",
     "@nuxt/devtools": "latest",
     "@types/node": "^18.17.3",
+    "eslint": "^8.39.0",
+    "eslint-plugin-vue": "^9.11.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.8",
     "nuxt": "^3.6.5"
   }
 }
