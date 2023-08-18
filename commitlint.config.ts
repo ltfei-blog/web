@@ -15,6 +15,8 @@ export default {
       ['build', 'ci', 'docs', 'feat', 'fix', 'perf', 'refactor', 'revert', 'style', 'test', 'chore']
     ],
     'scope-empty': [0],
+    'scope-case': [0],
+    'subject-case': [0],
     'subject-empty': [2, 'never']
   },
   prompt: {
