@@ -29,6 +29,7 @@
     "@commitlint/config-angular": "^17.6.5",
     "@commitlint/cz-commitlint": "^17.5.0",
     "@nuxt/devtools": "latest",
+    "@nuxtjs/style-resources": "^1.2.1",
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/node": "^18.17.3",
     "@vue/eslint-config-prettier": "^7.1.0",

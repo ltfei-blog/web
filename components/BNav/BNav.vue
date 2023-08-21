@@ -16,7 +16,7 @@ defineOptions({
 <style lang="less" scoped>
 nav.b-nav {
   height: 60px;
-  background: #ffffff;
+  background: @white;
   display: flex;
   align-items: center;
   box-shadow: 0px 2px 10px 0px #00000026;
