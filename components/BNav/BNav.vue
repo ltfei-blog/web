@@ -16,7 +16,7 @@ defineOptions({
 <style lang="less" scoped>
 nav.b-nav {
   height: 60px;
-  background: @white;
+  background: @bg-color;
   display: flex;
   align-items: center;
   box-shadow: 0px 2px 10px 0px #00000026;
@@ -35,6 +35,7 @@ nav.b-nav {
   .title {
     font-size: 20px;
     font-weight: 500;
+    color: @text-color;
   }
 }
 </style>
