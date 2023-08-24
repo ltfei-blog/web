@@ -19,7 +19,7 @@ nav.b-nav {
   background: @bg-color;
   display: flex;
   align-items: center;
-  box-shadow: 0px 2px 10px 0px #00000026;
+  box-shadow: 0px 2px 10px 0px @black-opacity-1;
   box-sizing: border-box;
   padding: 0 10px;
   .logo {
