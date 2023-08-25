@@ -3,23 +3,11 @@ import { useThemes } from '~/utils/theme'
 defineOptions({
   name: 'app'
 })
-const appConfig = useAppConfig()
-
-const mode = useThemes(appConfig.theme)
-
-const click = () => {
-  if (mode.value == 'light') {
-    mode.value = 'dark'
-  } else {
-    mode.value = 'light'
-  }
-}
+// const appConfig = useAppConfig()
+// const mode = useThemes(appConfig.theme)
 </script>
 
 <template>
-  <client-only>
-    <button @click="click">mode {{ mode }}</button>
-  </client-only>
   <div>
     <NuxtLayout>
       <NuxtPage />
