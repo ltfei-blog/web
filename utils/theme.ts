@@ -97,7 +97,7 @@ export const lessAdditionalData = () => {
     }
   })
   textType.forEach((e) => {
-    result.push(`@text-${e}: var(--text-${e});`)
+    result.push(`@text-color-${e}: var(--text-color-${e});`)
   })
   vars.forEach((e) => {
     result.push(`@${e}: var(--${e});`)
