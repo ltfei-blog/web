@@ -866,6 +866,29 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@ltfei-blog/blogui-components@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@ltfei-blog/blogui-components/-/blogui-components-0.2.0.tgz#532e769167c7934a0c6a5499e60257e7e6a42375"
+  integrity sha512-dwx6RMjZQpb3ZyGxTGnnm1293s5AI0CeYz31qC3pWnuuvkr9aQTkGD9piEAdAOciSHW+unw6Zzn4Mggz2oCBkA==
+  dependencies:
+    "@ltfei-blog/blogui-utils" "^0.2.0"
+
+"@ltfei-blog/blogui-utils@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@ltfei-blog/blogui-utils/-/blogui-utils-0.2.0.tgz#c26b92a967844a96aedff3be86c07e5cdf2ae2ca"
+  integrity sha512-DIM515EOSotK168vlSmQvDD061vxLn3nhliaFHXsgudR1w4t0wLOG860zijqFTXWRl7bSV+tSxGxpZ+2geG4pw==
+  dependencies:
+    dayjs "^1.11.9"
+
+"@ltfei-blog/blogui@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@ltfei-blog/blogui/-/blogui-0.2.0.tgz#1586bfc59b7c9fed7a7feab1c48e387c7db9e51e"
+  integrity sha512-sttF3GJRzXJ4UnO/m9gyF0g16VFatMaSy5xmbMhJ7vA6m6F4YUtGwLnmSHgMqIFUMUBc9N7J4B7Tgm02TUVBTw==
+  dependencies:
+    "@ltfei-blog/blogui-components" "^0.2.0"
+    "@vue/runtime-core" "^3.3.4"
+    vue "^3.3.4"
+
 "@mapbox/node-pre-gyp@^1.0.5":
   version "1.0.11"
   resolved "https://registry.npmmirror.com/@mapbox/node-pre-gyp/-/node-pre-gyp-1.0.11.tgz#417db42b7f5323d79e93b34a6d7a2a12c0df43fa"
@@ -1748,7 +1771,7 @@
   dependencies:
     "@vue/shared" "3.3.4"
 
-"@vue/runtime-core@3.3.4":
+"@vue/runtime-core@3.3.4", "@vue/runtime-core@^3.3.4":
   version "3.3.4"
   resolved "https://registry.npmmirror.com/@vue/runtime-core/-/runtime-core-3.3.4.tgz#4bb33872bbb583721b340f3088888394195967d1"
   integrity sha512-R+bqxMN6pWO7zGI4OMlmvePOdP2c93GsHFM/siJI7O2nxFRzj55pLwkpCedEY+bTMgp5miZ8CxfIZo3S+gFqvA==
@@ -2825,6 +2848,11 @@ data-uri-to-buffer@^4.0.0:
   version "4.0.1"
   resolved "https://registry.npmmirror.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz#d8feb2b2881e6a4f58c2e08acfd0e2834e26222e"
   integrity sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==
+
+dayjs@^1.11.9:
+  version "1.11.9"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
+  integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
 
 debug@2.6.9:
   version "2.6.9"
