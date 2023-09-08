@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import { init as initApi } from '~/apis/users/login'
 defineOptions({
   name: 'LoginCard'
 })
 /**
  * 该组件可在 /login 路由中展示，也可以弹窗形式展示
  */
+
+onMounted(async () => {
+  const { data: res } = await initApi()
+  console.log(res)
+})
 </script>
 
 <template>

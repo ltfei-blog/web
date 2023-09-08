@@ -26,5 +26,8 @@ export default defineAppConfig({
       'bg-color-page': '#111',
       'text-color': '#fff'
     }
+  },
+  public: {
+    apiBase: 'http://localhost:3000/'
   }
 })
