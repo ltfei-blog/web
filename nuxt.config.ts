@@ -13,5 +13,8 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+  devServer: {
+    port: 5173
   }
 })
