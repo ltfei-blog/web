@@ -1,10 +1,21 @@
 <script setup lang="ts">
+import { init as initApi, qqConnectLogin as qqConnectLoginApi } from '~/apis/users/login'
 defineOptions({
   name: 'LoginCard'
 })
 /**
  * 该组件可在 /login 路由中展示，也可以弹窗形式展示
  */
+
+//  初始化登录 获取 uuid
+const initData = useAsyncData('init', () => initApi())
+const uuid = initData.data?.value?.data.uuid
+
+// qq登录
+const qqConnectLogin = async () => {
+  const { data } = await qqConnectLoginApi(uuid!)
+  location.href = data.qqLoginUrl
+}
 </script>
 
 <template>
@@ -16,7 +27,7 @@ defineOptions({
     </div>
     <div class="other">
       <h3>其他方式登录</h3>
-      <div class="other-method qq">qq登录</div>
+      <div class="other-method qq" @click="qqConnectLogin">qq登录</div>
     </div>
     <div class="tips"></div>
   </div>
