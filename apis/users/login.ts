@@ -9,16 +9,26 @@ export const init = (): Response<{
   })
 }
 
-export const qqConnectLogin = (
+export const getQqConnectUrl = (
   uuid: string
 ): Response<{
   qqLoginUrl: string
 }> => {
   return axiosRequest({
-    url: '/users/login/qqConnect',
+    url: '/users/login/getQqConnectUrl',
     method: 'post',
     data: {
       uuid
+    }
+  })
+}
+export const qqConnectLogin = (uuid: string, authorizationCode: string): Response<{}> => {
+  return axiosRequest({
+    url: '/users/login/qqConnectLogin',
+    method: 'post',
+    data: {
+      uuid,
+      authorizationCode
     }
   })
 }

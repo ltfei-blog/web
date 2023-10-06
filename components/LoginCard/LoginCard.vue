@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { init as initApi, qqConnectLogin as qqConnectLoginApi } from '~/apis/users/login'
+import { init as initApi, getQqConnectUrl as qqConnectLoginApi } from '~/apis/users/login'
 defineOptions({
   name: 'LoginCard'
 })
