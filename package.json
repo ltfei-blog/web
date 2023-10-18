@@ -2,6 +2,7 @@
   "name": "ltfei-blog",
   "version": "0.0.1",
   "private": true,
+  "license": "GPL",
   "scripts": {
     "preinstall": "npx only-allow yarn",
     "build": "run-p lint build-only",
