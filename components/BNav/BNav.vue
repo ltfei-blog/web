@@ -6,12 +6,12 @@ defineOptions({
 
 <template>
   <nav class="b-nav">
-    <div class="left-entry">
+    <nuxt-link to="/" class="left-entry">
       <div class="logo">
         <img src="https://www.ltfei.cn/img/logo.d05ba22d.webp" alt="logo" />
       </div>
       <div class="title">Ltfei Blog</div>
-    </div>
+    </nuxt-link>
     <div class="right-entry">
       <nav-user />
     </div>
