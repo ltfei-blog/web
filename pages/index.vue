@@ -11,6 +11,9 @@ defineOptions({
     v-for="i in 10"
     :key="i"
     :title="`在typescript中使用顶级await-${i}`"
+    :to="`/p/${i}`"
+    router
+    :auto-collapse="470"
     desc="参考 背景await表达式是只能包含在async函数中，但有一种情况，需要在顶级(函数外层)使用await，比如需要在某"
     username="XING"
     avatar="https://thirdwx.qlogo.cn/mmopen/vi_32/qNuBAn7WLCxgqheUHPPFSlxof70yo9jWnZPPv8BiaMcxBzekOfQp2uwUOyjzL5DwdCkeawmaUf41sfF1ibgeGoIw/132"
@@ -21,5 +24,11 @@ defineOptions({
 <style lang="less" scoped>
 .b-card {
   margin: 15px;
+  display: block;
+  box-shadow: 3px 3px 5px 0 @black-opacity-1;
+  transition: all 0.3s;
+  &:hover {
+    box-shadow: 5px 5px 8px 0 @black-opacity-2;
+  }
 }
 </style>
