@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import 'element-plus/es/components/loading/style/css'
 import { qqConnectLogin } from '~/apis/users/login'
+import { useUserInfo } from '~/utils/userInfo'
 defineOptions({
   name: 'qqAccessCallback'
 })
@@ -10,10 +11,12 @@ const router = useRouter()
 
 const login = async () => {
   const { code: authorizationCode, state: uuid } = route.query
-  const { status, msg } = await qqConnectLogin(uuid as string, authorizationCode as string)
+  const { status, msg, data } = await qqConnectLogin(uuid as string, authorizationCode as string)
   if (status !== 200) {
     return ElMessage.error(status + ' 登录失败 ' + (msg || ''))
   }
+  localStorage.setItem('token', data.token)
+  useUserInfo()
   ElMessage.success('登录成功')
   router.push('/')
 }

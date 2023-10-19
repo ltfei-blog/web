@@ -7,6 +7,19 @@ const axiosRequest = axios.create({
   baseURL: baseURL
 })
 
+axiosRequest.interceptors.request.use((config) => {
+  let token
+  try {
+    token = localStorage.getItem('token')
+  } catch {
+    return config
+  }
+  if (token && config.headers) {
+    config.headers.Authorization = 'Bearer ' + token
+  }
+  return config
+})
+
 const request = async (AxiosRequestConfig: AxiosRequestConfig<any>) => {
   const { data: res } = await axiosRequest(AxiosRequestConfig)
   return res

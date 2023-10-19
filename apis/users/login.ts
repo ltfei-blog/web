@@ -22,7 +22,13 @@ export const getQqConnectUrl = (
     }
   })
 }
-export const qqConnectLogin = (uuid: string, authorizationCode: string): Response<{}> => {
+export const qqConnectLogin = (
+  uuid: string,
+  authorizationCode: string
+): Response<{
+  token: string
+  type: 'register' | 'login'
+}> => {
   return axiosRequest({
     url: '/users/login/qqConnectLogin',
     method: 'post',
