@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import { User as IconUser } from '@icon-park/vue-next'
+import { BAvatar } from '@ltfei-blog/blogui'
+import { useUserStore } from '~/store/user'
 defineOptions({
   name: 'NavUser'
 })
 
-const isLogin = false
+const { isLogin, user } = useUserStore()
 </script>
 
 <template>
   <div class="nav-user">
-    <nuxt-link v-if="!isLogin" to="/login" class="to-login-icon">
-      <icon-user></icon-user>
-    </nuxt-link>
+    <client-only>
+      <nuxt-link v-if="!isLogin" to="/login" class="to-login-icon">
+        <icon-user></icon-user>
+      </nuxt-link>
+      <template v-else>
+        <b-avatar :src="user.avatar"></b-avatar>
+      </template>
+    </client-only>
   </div>
 </template>
 
