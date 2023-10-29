@@ -11,6 +11,7 @@ const { isLogin, user } = useUserStore()
 
 <template>
   <div class="nav-user">
+    <nuxt-link to="/edit/markdown">编辑</nuxt-link>
     <client-only>
       <nuxt-link v-if="!isLogin" to="/login" class="to-login-icon">
         <icon-user></icon-user>
