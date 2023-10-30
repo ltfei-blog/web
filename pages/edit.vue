@@ -9,31 +9,29 @@ const title = '标题'
 <template>
   <div class="edit">
     <!-- todo: 不同编辑模式的切换 -->
-    <el-input placeholder="在这里输入标题" class="title_input" v-model="title"></el-input>
+    <a-input placeholder="在这里输入标题" class="title_input" v-model="title"></a-input>
     <nuxt-page />
     <h2>封面和摘要</h2>
-    <el-row :gutter="10">
-      <el-col class="grid-content" :span="5">
-        <el-upload class="upload">
+    <a-row :gutter="10">
+      <a-col class="grid-content" :span="5">
+        <a-upload class="upload">
           <!-- <img src="" class="avatar" /> -->
           <div class="not_image">
-            <el-icon size="35">
-              <icon-upload></icon-upload>
-            </el-icon>
+            <icon-upload size="35"></icon-upload>
             拖拽或选择封面
           </div>
-        </el-upload>
-      </el-col>
-      <el-col class="grid-content" :span="19">
-        <el-input class="desc" type="textarea" resize="none"></el-input>
-      </el-col>
-    </el-row>
+        </a-upload>
+      </a-col>
+      <a-col class="grid-content" :span="19">
+        <a-textarea class="desc"></a-textarea>
+      </a-col>
+    </a-row>
     <h2>文章设置</h2>
     <div class="unfinished">开发中,敬请期待</div>
     <div class="footer">
-      <el-button type="primary">存草稿</el-button>
-      <el-button>预览</el-button>
-      <el-button>发表</el-button>
+      <a-button type="primary">存草稿</a-button>
+      <a-button>预览</a-button>
+      <a-button>发表</a-button>
     </div>
   </div>
 </template>
@@ -74,9 +72,8 @@ const title = '标题'
     }
   }
   .desc {
-    :deep(textarea) {
-      height: 100px;
-    }
+    height: 100px;
+    resize: none;
   }
   .unfinished {
     width: 100%;

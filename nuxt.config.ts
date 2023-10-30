@@ -3,7 +3,7 @@ import { lessAdditionalData } from './utils/theme'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@vueuse/nuxt', '@element-plus/nuxt'],
+  modules: ['@vueuse/nuxt', '@ant-design-vue/nuxt'],
   css: ['@/assets/main.less'],
   vite: {
     css: {

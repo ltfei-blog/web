@@ -26,10 +26,10 @@
     }
   },
   "devDependencies": {
+    "@ant-design-vue/nuxt": "^1.1.2",
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-angular": "^17.6.5",
     "@commitlint/cz-commitlint": "^17.5.0",
-    "@element-plus/nuxt": "^1.0.6",
     "@nuxt/devtools": "latest",
     "@nuxtjs/style-resources": "^1.2.1",
     "@rushstack/eslint-patch": "^1.2.0",
@@ -54,7 +54,6 @@
     "@ltfei-blog/blogui": "^0.2.2",
     "axios": "^1.5.0",
     "codemirror": "^6.0.1",
-    "element-plus": "^2.3.14",
     "less": "^4.2.0"
   }
 }
