@@ -1,16 +1,47 @@
 <script setup lang="ts">
 import { Upload as IconUpload } from '@icon-park/vue-next'
+import { init as initApi } from '~/apis/articles/init'
+
 defineOptions({
   name: 'PageEdit'
 })
-const title = '标题'
+const title = ref('')
+const text = ref('')
+
+const init = async () => {
+  const res = await initApi()
+  if (res.status == 200) {
+    //
+  } else {
+    ElMessage.error('初始化失败')
+  }
+}
+init()
+
+/**
+ * 存草稿
+ */
+const save = () => {
+  if (!title) {
+    ElMessage.error('填个标题吧')
+  }
+}
+
+/**
+ * 发布
+ */
 </script>
 
 <template>
   <div class="edit">
     <!-- todo: 不同编辑模式的切换 -->
     <el-input placeholder="在这里输入标题" class="title_input" v-model="title"></el-input>
-    <nuxt-page />
+    <!-- <nuxt-page /> -->
+    <div class="editor">
+      <client-only>
+        <lazy-v-md-editor v-model="text"></lazy-v-md-editor>
+      </client-only>
+    </div>
     <h2>封面和摘要</h2>
     <el-row :gutter="10">
       <el-col class="grid-content" :span="5">
@@ -31,7 +62,7 @@ const title = '标题'
     <h2>文章设置</h2>
     <div class="unfinished">开发中,敬请期待</div>
     <div class="footer">
-      <el-button type="primary">存草稿</el-button>
+      <el-button type="primary" @click="save">存草稿</el-button>
       <el-button>预览</el-button>
       <el-button>发表</el-button>
     </div>
@@ -94,6 +125,11 @@ const title = '标题'
     justify-content: flex-end;
     background-color: @bg-color;
     border-top: 1px solid @black-opacity-2;
+  }
+  .editor {
+    .v-md-editor {
+      min-height: 500px;
+    }
   }
 }
 </style>
