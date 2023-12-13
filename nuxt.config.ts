@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     }
   },
   devServer: {
-    port: 5173
+    port: 80,
+    host: 'blog.dev.ltfei.cn'
   }
 })
