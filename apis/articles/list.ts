@@ -4,7 +4,6 @@ export const list = (): Response<
   {
     id: number
     title: string
-    content: string
     cover?: any
     desc: string
     status: number
