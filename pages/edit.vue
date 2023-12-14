@@ -13,7 +13,7 @@ const init = async () => {
   if (res.status == 200) {
     //
   } else {
-    ElMessage.error('初始化失败')
+    message.error('初始化失败')
   }
 }
 init()
@@ -23,7 +23,7 @@ init()
  */
 const save = () => {
   if (!title) {
-    ElMessage.error('填个标题吧')
+    message.error('填个标题吧')
   }
 }
 
@@ -35,36 +35,33 @@ const save = () => {
 <template>
   <div class="edit">
     <!-- todo: 不同编辑模式的切换 -->
-    <el-input placeholder="在这里输入标题" class="title_input" v-model="title"></el-input>
-    <!-- <nuxt-page /> -->
+    <a-input placeholder="在这里输入标题" class="title_input" v-model="title"></a-input>
     <div class="editor">
       <client-only>
         <lazy-v-md-editor v-model="text"></lazy-v-md-editor>
       </client-only>
     </div>
     <h2>封面和摘要</h2>
-    <el-row :gutter="10">
-      <el-col class="grid-content" :span="5">
-        <el-upload class="upload">
+    <a-row :gutter="10">
+      <a-col class="grid-content" :span="5">
+        <a-upload class="upload">
           <!-- <img src="" class="avatar" /> -->
           <div class="not_image">
-            <el-icon size="35">
-              <icon-upload></icon-upload>
-            </el-icon>
+            <icon-upload size="35"></icon-upload>
             拖拽或选择封面
           </div>
-        </el-upload>
-      </el-col>
-      <el-col class="grid-content" :span="19">
-        <el-input class="desc" type="textarea" resize="none"></el-input>
-      </el-col>
-    </el-row>
+        </a-upload>
+      </a-col>
+      <a-col class="grid-content" :span="19">
+        <a-textarea class="desc"></a-textarea>
+      </a-col>
+    </a-row>
     <h2>文章设置</h2>
     <div class="unfinished">开发中,敬请期待</div>
     <div class="footer">
-      <el-button type="primary" @click="save">存草稿</el-button>
-      <el-button>预览</el-button>
-      <el-button>发表</el-button>
+      <a-button type="primary" @click="save">存草稿</a-button>
+      <a-button>预览</a-button>
+      <a-button>发表</a-button>
     </div>
   </div>
 </template>
@@ -105,9 +102,8 @@ const save = () => {
     }
   }
   .desc {
-    :deep(textarea) {
-      height: 100px;
-    }
+    height: 100px;
+    resize: none;
   }
   .unfinished {
     width: 100%;

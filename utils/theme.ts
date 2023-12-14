@@ -58,8 +58,12 @@ const setCssVars = (theme: { [key: string]: string }) => {
   })
 }
 
+// todo: 优化主题色调用和返回方式
 export const useThemes = (themes: Theme) => {
   const mode = useColorMode()
+  const theme = ref<{
+    [key: string]: string
+  }>({})
   watch(
     mode,
     (mode) => {
@@ -67,13 +71,14 @@ export const useThemes = (themes: Theme) => {
         mode = 'light'
       }
       setCssVars(themes[mode])
+      theme.value = themes[mode]
     },
     {
       immediate: true
     }
   )
 
-  return mode
+  return { mode, theme }
 }
 
 /**

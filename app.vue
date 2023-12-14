@@ -6,14 +6,22 @@ defineOptions({
   name: 'app'
 })
 const appConfig = useAppConfig()
-useThemes(appConfig.theme)
+const { theme } = useThemes(appConfig.theme)
 useUserInfo()
 </script>
 
 <template>
   <div>
     <NuxtLayout>
-      <NuxtPage />
+      <a-config-provider
+        :theme="{
+          token: {
+            colorPrimary: theme.primary
+          }
+        }"
+      >
+        <NuxtPage />
+      </a-config-provider>
     </NuxtLayout>
   </div>
 </template>
