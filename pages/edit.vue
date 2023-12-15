@@ -3,7 +3,8 @@ import { Upload as IconUpload } from '@icon-park/vue-next'
 import { init as initApi } from '~/apis/articles/init'
 import { save as saveApi } from '~/apis/articles/save'
 import type { UnwrapRef } from 'vue'
-import type { Rule } from 'ant-design-vue/es/form'
+import type { Rule, FormInstance } from 'ant-design-vue/es/form'
+import type { FormValidateError } from '~/types/form'
 
 defineOptions({
   name: 'PageEdit'
@@ -25,7 +26,7 @@ const data = reactive<UnwrapRef<FormState>>({
   type: 'add'
 })
 
-const formRef = ref()
+const formRef = ref<FormInstance>()
 
 const init = async () => {
   const res = await initApi()
@@ -41,8 +42,13 @@ const init = async () => {
  * https://antdv.com/components/form-cn#components-form-demo-dynamic-rule
  *
  * todo: 通过伪元素设置内容区域字数提示
+ *
+ * todo: 验证失败时滚动到第一个异常的地方
  */
-const rules: Record<string, Rule[]> = {
+/**
+ * 发布文章的规则
+ */
+const publishRules: Record<string, Rule[]> = {
   title: [
     {
       required: true,
@@ -62,27 +68,75 @@ const rules: Record<string, Rule[]> = {
     },
     {
       min: 100,
-      max: 40000
+      message: '内容不能少于100字'
+    },
+    {
+      max: 40000,
+      message: '内容不能超过四万字'
     }
+  ],
+  desc: [
+    { required: true, message: '请输入简介' },
+    { min: 10, max: 100, message: '简介长度在10~100个字符' }
   ]
 }
+
+/**
+ * 保存草稿时的规则
+ */
+const saveRules: Record<string, Rule[]> = {
+  title: [
+    {
+      required: true,
+      message: '请输入标题'
+    },
+    {
+      min: 2,
+      // todo: 从后端获取规则，给文本框设置字数提示
+      max: 40,
+      message: '标题长度在2~40个字符'
+    }
+  ],
+  content: [
+    {
+      required: true,
+      message: '请输入内容'
+    },
+    {
+      min: 100,
+      message: '内容不能少于100字'
+    },
+    {
+      max: 40000,
+      message: '内容不能超过四万字'
+    }
+  ],
+  desc: [{ min: 10, max: 100, message: '简介长度在10~100个字符' }]
+}
+
+const rules = ref<'publish' | 'save'>('save')
 
 useNuxtApp().hook('page:start', () => {
   init()
 })
 
+const validate = async () => {
+  try {
+    return await formRef.value!.validate()
+  } catch (e: unknown) {
+    message.warn((e as FormValidateError).errorFields[0].errors[0])
+  }
+}
+
 /**
  * 存草稿
  */
 const save = async () => {
-  console.log(data)
+  const success = await validate()
+  if (!success) {
+    return
+  }
 
-  if (!data.title) {
-    return message.error('填个标题吧')
-  }
-  if (!data.content) {
-    return message.error('请输入内容')
-  }
   const res = await saveApi(data)
   if (res.status == 200) {
     return message.success('保存成功')
@@ -94,17 +148,10 @@ const save = async () => {
 /**
  * 发布
  */
-const publish = () => {
-  formRef.value
-    .validate()
-    .then(() => {
-      console.log('values', data, toRaw(data))
-    })
-    .catch((error: Error) => {
-      console.log('error', error)
-    })
-  if (!data.title) {
-    //
+const publish = async () => {
+  const success = await validate()
+  if (!success) {
+    return
   }
 }
 </script>
@@ -112,7 +159,7 @@ const publish = () => {
 <template>
   <div class="edit">
     <client-only>
-      <a-form :model="data" ref="formRef" :rules="rules">
+      <a-form :model="data" ref="formRef" :rules="rules == 'save' ? saveRules : publishRules">
         <a-form-item name="title">
           <!-- todo: 不同编辑模式的切换 -->
           <a-input
