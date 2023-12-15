@@ -8,6 +8,12 @@ const route = useRoute()
 const id = route.params.id as string
 
 const data = await useAsyncData('getDetails', () => detailsApi(id))
+
+useSeoMeta({
+  title: `ltfei-blog ${data.data.value?.data.title}`,
+  description: data.data.value?.data.desc,
+  keywords: data.data.value?.data.desc
+})
 </script>
 
 <template>
