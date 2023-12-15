@@ -22,6 +22,7 @@ const data = await useAsyncData('getArticles', () => listApi())
     :username="i.author_data.username"
     :avatar="i.author_data.avatar"
     :cover="i.cover"
+    :date="i.create_time"
   ></b-card>
 </template>
 

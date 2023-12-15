@@ -2,6 +2,7 @@
 import { Upload as IconUpload } from '@icon-park/vue-next'
 import { init as initApi } from '~/apis/articles/init'
 import { save as saveApi } from '~/apis/articles/save'
+import { publish as publishApi } from '~/apis/articles/publish'
 import type { UnwrapRef } from 'vue'
 import type { Rule, FormInstance } from 'ant-design-vue/es/form'
 import type { FormValidateError } from '~/types/form'
@@ -10,10 +11,12 @@ defineOptions({
   name: 'PageEdit'
 })
 
+const router = useRouter()
+
 interface FormState {
   title: string
-  desc?: string
-  cover?: string
+  desc: string
+  cover: string
   content: string
   type: 'add' | 'edit'
 }
@@ -153,6 +156,21 @@ const publish = async () => {
   if (!success) {
     return
   }
+
+  const res = await publishApi(data)
+  if (res.status != 200) {
+    return message.error('发布失败，请稍后再试')
+  }
+  // 如果需要审核，提示等待审核跳转首页
+  // todo: 我发布的待审核的文章
+  if (res.data.audit) {
+    message.success('发布成功，请等待审核')
+    router.push('/')
+  } else {
+    message.success('发布成功')
+    router.push(`/p/${res.data.id}`)
+  }
+  // 如果不需要审核，直接跳转到文章
 }
 </script>
 
