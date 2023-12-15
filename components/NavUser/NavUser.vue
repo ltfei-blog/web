@@ -24,6 +24,10 @@ const { isLogin, user } = useUserStore()
 </template>
 
 <style lang="less" scoped>
+.nav-user {
+  display: flex;
+  align-items: center;
+}
 .to-login-icon {
   width: 20px;
   height: 20px;

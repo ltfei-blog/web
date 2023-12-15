@@ -7,19 +7,24 @@ defineOptions({
 const route = useRoute()
 const id = route.params.id as string
 
-const data = await useAsyncData('getDetails', () => detailsApi(id))
+const { data } = await useAsyncData('getDetails', () => detailsApi(id))
 
 useSeoMeta({
-  title: `ltfei-blog ${data.data.value?.data.title}`,
-  description: data.data.value?.data.desc,
-  keywords: data.data.value?.data.desc
+  title: `ltfei-blog ${data.value?.data.title}`,
+  description: data.value?.data.desc,
+  keywords: data.value?.data.desc
 })
 </script>
 
 <template>
   <div class="page-p">
-    <h1>{{ data.data.value?.data.title }}</h1>
-    <lazy-v-md-preview :text="data.data.value?.data.content" />
+    <page-header
+      :title="data?.data.title!"
+      :date="data!.data.create_time"
+      :avatar="data!.data.author_data.avatar"
+      :username="data!.data.author_data.username"
+    />
+    <lazy-v-md-preview :text="data?.data.content" />
   </div>
 </template>
 
