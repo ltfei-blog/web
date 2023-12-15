@@ -2,24 +2,30 @@
 import { Upload as IconUpload } from '@icon-park/vue-next'
 import { init as initApi } from '~/apis/articles/init'
 import { save as saveApi } from '~/apis/articles/save'
+import type { UnwrapRef } from 'vue'
+import type { Rule } from 'ant-design-vue/es/form'
 
 defineOptions({
   name: 'PageEdit'
 })
 
-const data = reactive<{
+interface FormState {
   title: string
   desc?: string
   cover?: string
   content: string
   type: 'add' | 'edit'
-}>({
+}
+
+const data = reactive<UnwrapRef<FormState>>({
   title: '',
   content: '',
   desc: '',
   cover: '',
   type: 'add'
 })
+
+const formRef = ref()
 
 const init = async () => {
   const res = await initApi()
@@ -28,6 +34,37 @@ const init = async () => {
   } else {
     message.error('初始化失败')
   }
+}
+
+/**
+ * todo: 存草稿和发布的验证规则不同
+ * https://antdv.com/components/form-cn#components-form-demo-dynamic-rule
+ *
+ * todo: 通过伪元素设置内容区域字数提示
+ */
+const rules: Record<string, Rule[]> = {
+  title: [
+    {
+      required: true,
+      message: '请输入标题'
+    },
+    {
+      min: 2,
+      // todo: 从后端获取规则，给文本框设置字数提示
+      max: 40,
+      message: '标题长度在2~40个字符'
+    }
+  ],
+  content: [
+    {
+      required: true,
+      message: '请输入内容'
+    },
+    {
+      min: 100,
+      max: 40000
+    }
+  ]
 }
 
 useNuxtApp().hook('page:start', () => {
@@ -58,6 +95,14 @@ const save = async () => {
  * 发布
  */
 const publish = () => {
+  formRef.value
+    .validate()
+    .then(() => {
+      console.log('values', data, toRaw(data))
+    })
+    .catch((error: Error) => {
+      console.log('error', error)
+    })
   if (!data.title) {
     //
   }
@@ -66,35 +111,47 @@ const publish = () => {
 
 <template>
   <div class="edit">
-    <!-- todo: 不同编辑模式的切换 -->
-    <a-input placeholder="在这里输入标题" class="title_input" v-model:value="data.title"></a-input>
-    <div class="editor">
-      <client-only>
-        <lazy-v-md-editor v-model="data.content"></lazy-v-md-editor>
-      </client-only>
-    </div>
-    <h2>封面和摘要</h2>
-    <a-row :gutter="10">
-      <a-col class="grid-content" :span="5">
-        <a-upload class="upload">
-          <img v-if="data.cover" :src="data.cover" class="avatar" />
-          <div v-else class="not_image">
-            <icon-upload size="35"></icon-upload>
-            拖拽或选择封面
+    <client-only>
+      <a-form :model="data" ref="formRef" :rules="rules">
+        <a-form-item name="title">
+          <!-- todo: 不同编辑模式的切换 -->
+          <a-input
+            placeholder="在这里输入标题"
+            class="title_input"
+            v-model:value="data.title"
+          ></a-input>
+        </a-form-item>
+        <a-form-item name="content">
+          <div class="editor">
+            <lazy-v-md-editor v-model="data.content"></lazy-v-md-editor>
           </div>
-        </a-upload>
-      </a-col>
-      <a-col class="grid-content" :span="19">
-        <a-textarea class="desc" v-model:value="data.desc"></a-textarea>
-      </a-col>
-    </a-row>
-    <h2>文章设置</h2>
-    <div class="unfinished">开发中,敬请期待</div>
-    <div class="footer">
-      <a-button type="primary" @click="save">存草稿</a-button>
-      <a-button>预览</a-button>
-      <a-button @click="publish">发布</a-button>
-    </div>
+        </a-form-item>
+        <h2>封面和摘要</h2>
+        <a-row :gutter="10">
+          <a-col class="grid-content" :span="5">
+            <a-upload class="upload">
+              <img v-if="data.cover" :src="data.cover" class="avatar" />
+              <div v-else class="not_image">
+                <icon-upload size="35"></icon-upload>
+                拖拽或选择封面
+              </div>
+            </a-upload>
+          </a-col>
+          <a-col class="grid-content" :span="19">
+            <a-textarea class="desc" v-model:value="data.desc"></a-textarea>
+          </a-col>
+        </a-row>
+        <h2>文章设置</h2>
+        <div class="unfinished">开发中,敬请期待</div>
+        <a-form-item>
+          <div class="footer">
+            <a-button type="primary" @click="save">存草稿</a-button>
+            <a-button>预览</a-button>
+            <a-button @click="publish">发布</a-button>
+          </div>
+        </a-form-item>
+      </a-form>
+    </client-only>
   </div>
 </template>
 
