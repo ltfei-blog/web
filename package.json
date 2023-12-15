@@ -54,6 +54,7 @@
     "@ltfei-blog/blogui": "^0.2.2",
     "axios": "^1.5.0",
     "codemirror": "^6.0.1",
+    "dayjs": "^1.11.10",
     "less": "^4.2.0"
   }
 }
