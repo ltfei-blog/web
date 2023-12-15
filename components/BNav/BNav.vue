@@ -27,6 +27,9 @@ nav.b-nav {
   padding: 0 10px;
   display: flex;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
   .left-entry,
   .right-entry {
     display: flex;

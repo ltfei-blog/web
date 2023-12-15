@@ -1,12 +1,25 @@
 <script setup lang="ts">
 import { Upload as IconUpload } from '@icon-park/vue-next'
 import { init as initApi } from '~/apis/articles/init'
+import { save as saveApi } from '~/apis/articles/save'
 
 defineOptions({
   name: 'PageEdit'
 })
-const title = ref('')
-const text = ref('')
+
+const data = reactive<{
+  title: string
+  desc?: string
+  cover?: string
+  content: string
+  type: 'add' | 'edit'
+}>({
+  title: '',
+  content: '',
+  desc: '',
+  cover: '',
+  type: 'add'
+})
 
 const init = async () => {
   const res = await initApi()
@@ -16,44 +29,63 @@ const init = async () => {
     message.error('初始化失败')
   }
 }
-init()
+
+useNuxtApp().hook('page:start', () => {
+  init()
+})
 
 /**
  * 存草稿
  */
-const save = () => {
-  if (!title) {
-    message.error('填个标题吧')
+const save = async () => {
+  console.log(data)
+
+  if (!data.title) {
+    return message.error('填个标题吧')
+  }
+  if (!data.content) {
+    return message.error('请输入内容')
+  }
+  const res = await saveApi(data)
+  if (res.status == 200) {
+    return message.success('保存成功')
+  } else {
+    return message.error('保存失败，请稍后再试')
   }
 }
 
 /**
  * 发布
  */
+const publish = () => {
+  if (!data.title) {
+    //
+  }
+}
 </script>
 
 <template>
   <div class="edit">
     <!-- todo: 不同编辑模式的切换 -->
-    <a-input placeholder="在这里输入标题" class="title_input" v-model="title"></a-input>
+    <a-input placeholder="在这里输入标题" class="title_input" v-model:value="data.title"></a-input>
     <div class="editor">
       <client-only>
-        <lazy-v-md-editor v-model="text"></lazy-v-md-editor>
+        <lazy-v-md-editor v-model="data.content"></lazy-v-md-editor>
       </client-only>
     </div>
     <h2>封面和摘要</h2>
     <a-row :gutter="10">
       <a-col class="grid-content" :span="5">
         <a-upload class="upload">
-          <!-- <img src="" class="avatar" /> -->
-          <div class="not_image">
+          <img v-if="data.cover" :src="data.cover" class="avatar" />
+          <div v-else class="not_image">
             <icon-upload size="35"></icon-upload>
             拖拽或选择封面
           </div>
         </a-upload>
       </a-col>
       <a-col class="grid-content" :span="19">
-        <a-textarea class="desc"></a-textarea>
+        <a-textarea class="desc" v-model:value="data.desc"></a-textarea>
       </a-col>
     </a-row>
     <h2>文章设置</h2>
@@ -61,7 +93,7 @@ const save = () => {
     <div class="footer">
       <a-button type="primary" @click="save">存草稿</a-button>
       <a-button>预览</a-button>
-      <a-button>发表</a-button>
+      <a-button @click="publish">发布</a-button>
     </div>
   </div>
 </template>
@@ -121,6 +153,10 @@ const save = () => {
     justify-content: flex-end;
     background-color: @bg-color;
     border-top: 1px solid @black-opacity-2;
+
+    button {
+      margin-left: 5px;
+    }
   }
   .editor {
     .v-md-editor {
