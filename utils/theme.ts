@@ -87,6 +87,8 @@ export const useThemes = (themes: Theme) => {
  */
 export const lessAdditionalData = () => {
   const result: string[] = []
+  // 工具less
+  result.push(`@import url('assets/utils.less');`)
   pureColor.forEach((e) => {
     result.push(`@${e}: var(--${e});`)
     let i = primaryColorLevel
