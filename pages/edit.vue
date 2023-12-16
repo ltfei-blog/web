@@ -6,6 +6,7 @@ import { publish as publishApi } from '~/apis/articles/publish'
 import type { UnwrapRef } from 'vue'
 import type { Rule, FormInstance } from 'ant-design-vue/es/form'
 import type { FormValidateError } from '~/types/form'
+import EditLevalFooter from '~/components/EditLevalFooter/EditLevalFooter.vue'
 
 defineOptions({
   name: 'PageEdit'
@@ -172,6 +173,38 @@ const publish = async () => {
   }
   // 如果不需要审核，直接跳转到文章
 }
+/**
+ * 通过vue-router跳转路由时的提示
+ * todo: 判断文章是否保存
+ */
+onBeforeRouteLeave((to, form, next) => {
+  Modal.warn({
+    title: '还没有保存文章',
+    content: '是否保存文章',
+    onOk: () => {
+      next()
+    },
+    onCancel() {
+      next(false)
+    },
+    footer() {
+      return h(EditLevalFooter)
+    }
+  })
+})
+/**
+ * 浏览器关闭/刷新窗口时的提示
+ */
+const beforeunload = (e: BeforeUnloadEvent) => {
+  e.returnValue = '系统不会保存您所做的更改'
+  return '系统不会保存您所做的更改'
+}
+onMounted(() => {
+  window.addEventListener('beforeunload', beforeunload)
+})
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', beforeunload)
+})
 </script>
 
 <template>
