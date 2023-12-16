@@ -10,8 +10,8 @@ export const details = (
   desc: string
   status: number
   author: number
-  create_time: string
-  last_edit_time?: any
+  create_time: number
+  last_edit_time?: number
   author_data: {
     id: number
     username: string
@@ -19,8 +19,8 @@ export const details = (
     avatar: string
     city?: any
     gender?: any
-    register_date: string
-    last_login_date?: any
+    register_date: number
+    last_login_date?: number
     register_ip: string
     status?: any
     avatar_pendant?: any
