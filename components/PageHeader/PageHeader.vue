@@ -8,7 +8,7 @@ defineOptions({
 
 defineProps<{
   title: string
-  date: string
+  date: number
   avatar: string
   username: string
 }>()
