@@ -135,17 +135,19 @@ const validate = async () => {
 /**
  * 存草稿
  */
-const save = async () => {
+const save = async (): Promise<Boolean> => {
   const success = await validate()
   if (!success) {
-    return
+    return false
   }
 
   const res = await saveApi(data)
   if (res.status == 200) {
-    return message.success('保存成功')
+    message.success('保存成功')
+    return true
   } else {
-    return message.error('保存失败，请稍后再试')
+    message.error('保存失败，请稍后再试')
+    return false
   }
 }
 
@@ -178,17 +180,35 @@ const publish = async () => {
  * todo: 判断文章是否保存
  */
 onBeforeRouteLeave((to, form, next) => {
-  Modal.warn({
+  // levalModel.value = true
+  const modal = Modal.warn({
     title: '还没有保存文章',
     content: '是否保存文章',
-    onOk: () => {
-      next()
-    },
     onCancel() {
       next(false)
     },
     footer() {
-      return h(EditLevalFooter)
+      return h(EditLevalFooter, {
+        async onClose(e) {
+          if (e == 'saveAndClose') {
+            const result = await save()
+            // 保存时需要等待请求后关闭
+            modal.destroy()
+            if (result) {
+              return next()
+            }
+            return next(false)
+          }
+          // 取消和不保存无需等待，直接销毁
+          modal.destroy()
+          if (e == 'cancel') {
+            return next(false)
+          }
+          if (e == 'onlyClose') {
+            return next()
+          }
+        }
+      })
     }
   })
 })
@@ -251,6 +271,7 @@ onUnmounted(() => {
       </a-form>
     </client-only>
   </div>
+  <!-- <EditLevalFooter :open="levalModel" /> -->
 </template>
 
 <style lang="less" scoped>
