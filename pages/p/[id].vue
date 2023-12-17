@@ -40,8 +40,13 @@ useSeoMeta({
   margin: 0 auto;
   min-height: 80vh;
   background-color: @bg-color;
-  padding: 20px;
   box-sizing: border-box;
+  padding: 20px;
+  transition: all 0.3s;
+  .min-width(700px, {
+    padding: 20px 0;
+
+  });
 }
 .sidebar-container {
   max-width: 950px;

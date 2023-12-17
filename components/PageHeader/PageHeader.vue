@@ -22,10 +22,13 @@ defineProps<{
   </div>
   <div class="author">
     <div class="author-info">
-      <b-avatar :src="avatar"></b-avatar>
-      <div class="info">
+      <b-avatar class="avatar" :src="avatar"></b-avatar>
+      <div class="author-user-info">
         <div class="name">{{ username }}</div>
-        <div>粉丝：0 文章：1</div>
+        <div class="data">
+          <span>粉丝：0</span>
+          <span>文章：1</span>
+        </div>
       </div>
     </div>
     <a-button type="primary">关注</a-button>
@@ -47,6 +50,7 @@ defineProps<{
   font-size: 14px;
   margin-top: 10px;
   display: flex;
+  flex-wrap: wrap;
   .date {
     margin-right: 30px;
   }
@@ -59,12 +63,20 @@ defineProps<{
   .author-info {
     display: flex;
     align-items: center;
-    .info {
+    .avatar {
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .author-user-info {
       display: flex;
       flex-direction: column;
       font-size: 12px;
       .name {
         font-weight: 700;
+      }
+      .data {
+        display: flex;
+        flex-wrap: wrap;
       }
     }
   }
