@@ -135,6 +135,7 @@ const validate = async () => {
 /**
  * 存草稿
  */
+const saveLoading = reactive({ value: false })
 const save = async (): Promise<Boolean> => {
   const success = await validate()
   if (!success) {
@@ -154,6 +155,9 @@ const save = async (): Promise<Boolean> => {
 /**
  * 发布
  */
+const publishLoading = reactive({
+  value: false
+})
 const publish = async () => {
   const success = await validate()
   if (!success) {
@@ -165,22 +169,21 @@ const publish = async () => {
     return message.error('发布失败，请稍后再试')
   }
   // 如果需要审核，提示等待审核跳转首页
-  // todo: 我发布的待审核的文章
+  // todo: 跳转到我发布的待审核的文章页面
   if (res.data.audit) {
     message.success('发布成功，请等待审核')
     router.push('/')
   } else {
+    // 如果不需要审核，直接跳转到文章
     message.success('发布成功')
     router.push(`/p/${res.data.id}`)
   }
-  // 如果不需要审核，直接跳转到文章
 }
 /**
  * 通过vue-router跳转路由时的提示
  * todo: 判断文章是否保存
  */
 onBeforeRouteLeave((to, form, next) => {
-  // levalModel.value = true
   const modal = Modal.warn({
     title: '还没有保存文章',
     content: '是否保存文章',
@@ -225,6 +228,20 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('beforeunload', beforeunload)
 })
+
+/**
+ * 封装按钮加载状态
+ */
+const withLoding = async (
+  fn: Function,
+  loading: {
+    value: boolean
+  }
+) => {
+  loading.value = true
+  await fn()
+  loading.value = false
+}
 </script>
 
 <template>
@@ -263,9 +280,16 @@ onUnmounted(() => {
         <div class="unfinished">开发中,敬请期待</div>
         <a-form-item>
           <div class="footer">
-            <a-button type="primary" @click="save">存草稿</a-button>
+            <a-button
+              type="primary"
+              @click="withLoding(save, saveLoading)"
+              :loading="saveLoading.value"
+              >存草稿</a-button
+            >
             <a-button>预览</a-button>
-            <a-button @click="publish">发布</a-button>
+            <a-button @click="withLoding(publish, publishLoading)" :loading="publishLoading.value">
+              发布
+            </a-button>
           </div>
         </a-form-item>
       </a-form>
