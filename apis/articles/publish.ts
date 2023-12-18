@@ -3,7 +3,7 @@ import axiosRequest, { type Response } from '~/utils/request'
 interface Data {
   title: string
   desc: string
-  cover: string
+  cover?: string
   content: string
   type: 'add' | 'edit'
 }

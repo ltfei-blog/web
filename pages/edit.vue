@@ -17,7 +17,7 @@ const router = useRouter()
 interface FormState {
   title: string
   desc: string
-  cover: string
+  cover?: string
   content: string
   type: 'add' | 'edit'
 }
@@ -26,7 +26,7 @@ const data = reactive<UnwrapRef<FormState>>({
   title: '',
   content: '',
   desc: '',
-  cover: '',
+  cover: undefined,
   type: 'add'
 })
 
@@ -273,7 +273,9 @@ const withLoding = async (
             </a-upload>
           </a-col>
           <a-col class="grid-content" :span="19">
-            <a-textarea class="desc" v-model:value="data.desc"></a-textarea>
+            <a-form-item name="desc">
+              <a-textarea class="desc" v-model:value="data.desc"></a-textarea>
+            </a-form-item>
           </a-col>
         </a-row>
         <h2>文章设置</h2>
