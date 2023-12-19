@@ -6,6 +6,7 @@ interface Data {
   cover?: string
   content: string
   type: 'add' | 'edit'
+  articlesId?: number
 }
 
 export const publish = (

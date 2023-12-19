@@ -6,6 +6,7 @@ interface Data {
   cover?: string
   content: string
   type: 'add' | 'edit'
+  editId?: number
 }
 export const save = (data: Data): Response<{}> => {
   return axiosRequest({

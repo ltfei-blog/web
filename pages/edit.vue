@@ -4,7 +4,7 @@ import { init as initApi } from '~/apis/articles/init'
 import { save as saveApi } from '~/apis/articles/save'
 import { publish as publishApi } from '~/apis/articles/publish'
 import type { UnwrapRef } from 'vue'
-import type { Rule, FormInstance } from 'ant-design-vue/es/form'
+import type { FormInstance } from 'ant-design-vue/es/form'
 import type { FormValidateError } from '~/types/form'
 import EditLevalFooter from '~/components/EditLevalFooter/EditLevalFooter.vue'
 
@@ -35,6 +35,50 @@ const data = reactive<UnwrapRef<FormState>>({
 
 const formRef = ref<FormInstance>()
 
+/**
+ * 文章规则
+ * todo: 动态从后端获取
+ */
+const saveRules = {
+  title: {
+    min: 2,
+    max: 40
+  },
+  content: {
+    min: 5,
+    max: 40000
+  },
+  desc: {
+    min: 10,
+    max: 100
+  }
+}
+const publishRules = {
+  title: {
+    min: 2,
+    max: 40
+  },
+  content: {
+    min: 100,
+    max: 40000
+  },
+  desc: {
+    min: 10,
+    max: 100
+  }
+}
+/**
+ * 文章校验使用的规则
+ */
+const ruleType = ref<'save' | 'publish'>('save')
+const rules = computed(() => {
+  if (ruleType.value == 'save') {
+    return saveRules
+  } else {
+    return publishRules
+  }
+})
+
 const init = async () => {
   /**
    * 校验 editId
@@ -44,17 +88,36 @@ const init = async () => {
   }
   data.type = editId ? 'edit' : 'add'
   const res = await initApi(editId ? 'edit' : 'add', Number(editId))
-  if (res.status == 200) {
-    if (res.data.edit) {
-      const { title, content, desc, cover } = res.data.edit
-      data.title = title
-      data.content = content
-      data.desc = desc
-      data.cover = cover
-    }
+  if (res.status != 200) {
+    return message.error('初始化失败')
+  }
+  /**
+   * 设置规则
+   * todo: 动态获取规则
+   */
+
+  /**
+   * 有草稿
+   */
+  if (res.data.edit) {
+    const { title, content, desc, cover } = res.data.edit
+    data.title = title
+    data.content = content
+    data.desc = desc
+    data.cover = cover
     message.info('已加载上次编辑的草稿')
-  } else {
-    message.error('初始化失败')
+    return
+  }
+  /**
+   * 加载文章内容
+   */
+  if (res.data.article) {
+    const { title, content, desc, cover } = res.data.article
+    data.title = title
+    data.content = content
+    data.desc = desc
+    data.cover = cover
+    return
   }
 }
 
@@ -63,90 +126,23 @@ if (process.client) {
 }
 
 /**
- * todo: 存草稿和发布的验证规则不同
- * https://antdv.com/components/form-cn#components-form-demo-dynamic-rule
- *
  * todo: 通过伪元素设置内容区域字数提示
- *
  * todo: 验证失败时滚动到第一个异常的地方
  */
-/**
- * 发布文章的规则
- */
-const publishRules: Record<string, Rule[]> = {
-  title: [
-    {
-      required: true,
-      message: '请输入标题'
-    },
-    {
-      min: 2,
-      // todo: 从后端获取规则，给文本框设置字数提示
-      max: 40,
-      message: '标题长度在2~40个字符'
-    }
-  ],
-  content: [
-    {
-      required: true,
-      message: '请输入内容'
-    },
-    {
-      min: 100,
-      message: '内容不能少于100字'
-    },
-    {
-      max: 40000,
-      message: '内容不能超过四万字'
-    }
-  ],
-  desc: [
-    { required: true, message: '请输入简介' },
-    { min: 10, max: 100, message: '简介长度在10~100个字符' }
-  ]
-}
 
-/**
- * 保存草稿时的规则
- */
-const saveRules: Record<string, Rule[]> = {
-  title: [
-    {
-      required: true,
-      message: '请输入标题'
-    },
-    {
-      min: 2,
-      // todo: 从后端获取规则，给文本框设置字数提示
-      max: 40,
-      message: '标题长度在2~40个字符'
-    }
-  ],
-  content: [
-    {
-      required: true,
-      message: '请输入内容'
-    },
-    {
-      min: 100,
-      message: '内容不能少于100字'
-    },
-    {
-      max: 40000,
-      message: '内容不能超过四万字'
-    }
-  ],
-  desc: [{ min: 10, max: 100, message: '简介长度在10~100个字符' }]
-}
-
-const rules = ref<'publish' | 'save'>('save')
-
-const validate = async () => {
-  try {
-    return await formRef.value!.validate()
-  } catch (e: unknown) {
-    message.warn((e as FormValidateError).errorFields[0].errors[0])
-  }
+const validate = async (type: 'save' | 'publish'): Promise<false | object> => {
+  return new Promise((resolve) => {
+    ruleType.value = type
+    nextTick(async () => {
+      try {
+        const validate = await formRef.value!.validate()
+        resolve(validate)
+      } catch (e: unknown) {
+        message.warn((e as FormValidateError).errorFields[0].errors[0])
+        resolve(false)
+      }
+    })
+  })
 }
 
 /**
@@ -154,12 +150,12 @@ const validate = async () => {
  */
 const saveLoading = reactive({ value: false })
 const save = async (): Promise<Boolean> => {
-  const success = await validate()
+  const success = await validate('save')
   if (!success) {
     return false
   }
 
-  const res = await saveApi(data)
+  const res = await saveApi({ ...data, editId: Number(editId) })
   if (res.status == 200) {
     message.success('保存成功')
     watchEdit()
@@ -177,12 +173,19 @@ const publishLoading = reactive({
   value: false
 })
 const publish = async () => {
-  const success = await validate()
+  const success = await validate('publish')
   if (!success) {
     return
   }
 
-  const res = await publishApi(data)
+  /**
+   * 简介为选填项，如果不填，则由前端自动截取前..字，长度为10~100个字符
+   */
+  if (!data.desc) {
+    data.desc = data.content.slice(0, 100)
+  }
+
+  const res = await publishApi({ ...data, articlesId: Number(editId) })
   if (res.status != 200) {
     return message.error('发布失败，请稍后再试')
   }
@@ -285,7 +288,39 @@ const withLoding = async (
 <template>
   <div class="edit">
     <client-only>
-      <a-form :model="data" ref="formRef" :rules="rules == 'save' ? saveRules : publishRules">
+      <a-form
+        :model="data"
+        ref="formRef"
+        :rules="{
+          title: [
+            {
+              required: true,
+              message: '请输入标题'
+            },
+            {
+              min: rules.title.min,
+              // todo: 从后端获取规则，给文本框设置字数提示
+              max: rules.title.max,
+              message: `标题长度在${rules.title.min}~${rules.title.max}个字符`
+            }
+          ],
+          content: [
+            {
+              required: true,
+              message: '请输入内容'
+            },
+            {
+              min: rules.content.min,
+              message: `内容不能少于${rules.content.min}字`
+            },
+            {
+              max: 40000,
+              message: '内容不能超过四万字'
+            }
+          ],
+          desc: [{ min: 10, max: 100, message: '简介长度在10~100个字符' }]
+        }"
+      >
         <a-form-item name="title">
           <!-- todo: 不同编辑模式的切换 -->
           <a-input
