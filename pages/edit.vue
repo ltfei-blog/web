@@ -145,6 +145,7 @@ const save = async (): Promise<Boolean> => {
   const res = await saveApi(data)
   if (res.status == 200) {
     message.success('保存成功')
+    watchEdit()
     return true
   } else {
     message.error('保存失败，请稍后再试')
@@ -170,6 +171,7 @@ const publish = async () => {
   }
   // 如果需要审核，提示等待审核跳转首页
   // todo: 跳转到我发布的待审核的文章页面
+  watchEdit()
   if (res.data.audit) {
     message.success('发布成功，请等待审核')
     router.push('/')
@@ -179,11 +181,26 @@ const publish = async () => {
     router.push(`/p/${res.data.id}`)
   }
 }
+
+/**
+ * 判断文章是否保存
+ */
+let saved = false
+const watchEdit = () => {
+  saved = true
+  const stop = watch(data, () => {
+    saved = false
+    stop()
+  })
+}
+
 /**
  * 通过vue-router跳转路由时的提示
- * todo: 判断文章是否保存
  */
 onBeforeRouteLeave((to, form, next) => {
+  if (saved) {
+    return next()
+  }
   const modal = Modal.warn({
     title: '还没有保存文章',
     content: '是否保存文章',
@@ -219,6 +236,9 @@ onBeforeRouteLeave((to, form, next) => {
  * 浏览器关闭/刷新窗口时的提示
  */
 const beforeunload = (e: BeforeUnloadEvent) => {
+  if (saved) {
+    return
+  }
   e.returnValue = '系统不会保存您所做的更改'
   return '系统不会保存您所做的更改'
 }
