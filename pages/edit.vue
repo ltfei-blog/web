@@ -13,6 +13,9 @@ defineOptions({
 })
 
 const router = useRouter()
+const route = useRoute()
+
+const editId = route.query.id as string | undefined
 
 interface FormState {
   title: string
@@ -33,12 +36,30 @@ const data = reactive<UnwrapRef<FormState>>({
 const formRef = ref<FormInstance>()
 
 const init = async () => {
-  const res = await initApi()
+  /**
+   * 校验 editId
+   */
+  if (editId && !/^[0-9]{1,10}$/.test(editId)) {
+    return message.error('404')
+  }
+  data.type = editId ? 'edit' : 'add'
+  const res = await initApi(editId ? 'edit' : 'add', Number(editId))
   if (res.status == 200) {
-    //
+    if (res.data.edit) {
+      const { title, content, desc, cover } = res.data.edit
+      data.title = title
+      data.content = content
+      data.desc = desc
+      data.cover = cover
+    }
+    message.info('已加载上次编辑的草稿')
   } else {
     message.error('初始化失败')
   }
+}
+
+if (process.client) {
+  init()
 }
 
 /**
@@ -119,10 +140,6 @@ const saveRules: Record<string, Rule[]> = {
 }
 
 const rules = ref<'publish' | 'save'>('save')
-
-useNuxtApp().hook('page:start', () => {
-  init()
-})
 
 const validate = async () => {
   try {
@@ -239,8 +256,9 @@ const beforeunload = (e: BeforeUnloadEvent) => {
   if (saved) {
     return
   }
-  e.returnValue = '系统不会保存您所做的更改'
-  return '系统不会保存您所做的更改'
+  e.preventDefault()
+  e.returnValue = ''
+  return ''
 }
 onMounted(() => {
   window.addEventListener('beforeunload', beforeunload)
