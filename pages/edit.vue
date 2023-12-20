@@ -33,6 +33,11 @@ const data = reactive<UnwrapRef<FormState>>({
   type: 'add'
 })
 
+const count = computed(() => {
+  // 在css伪元素中使用，需要加额外的引号
+  return `"${data.content.length}"`
+})
+
 const formRef = ref<FormInstance>()
 
 /**
@@ -126,7 +131,6 @@ if (process.client) {
 }
 
 /**
- * todo: 通过伪元素设置内容区域字数提示
  * todo: 验证失败时滚动到第一个异常的地方
  */
 
@@ -327,10 +331,15 @@ const withLoding = async (
             placeholder="在这里输入标题"
             class="title_input"
             v-model:value="data.title"
+            show-count
+            :maxlength="rules.title.max"
           ></a-input>
         </a-form-item>
         <a-form-item name="content">
-          <div class="editor">
+          <div
+            class="editor"
+            :class="data.content.length > rules.content.max ? 'status-error' : ''"
+          >
             <lazy-v-md-editor v-model="data.content"></lazy-v-md-editor>
           </div>
         </a-form-item>
@@ -347,7 +356,12 @@ const withLoding = async (
           </a-col>
           <a-col class="grid-content" :span="19">
             <a-form-item name="desc">
-              <a-textarea class="desc" v-model:value="data.desc"></a-textarea>
+              <a-textarea
+                class="desc"
+                v-model:value="data.desc"
+                show-count
+                :maxlength="rules.desc.max"
+              ></a-textarea>
             </a-form-item>
           </a-col>
         </a-row>
@@ -410,7 +424,9 @@ const withLoding = async (
   }
   .desc {
     height: 100px;
-    resize: none;
+    :deep(textarea) {
+      resize: none;
+    }
   }
   .unfinished {
     width: 100%;
@@ -436,6 +452,18 @@ const withLoding = async (
   .editor {
     .v-md-editor {
       min-height: 500px;
+      :deep(.v-md-editor__editor-wrapper .scrollbar) {
+        position: relative;
+        &::before {
+          content: v-bind(count);
+          position: absolute;
+          bottom: 5px;
+          right: 10px;
+        }
+      }
+    }
+    &.status-error :deep(.v-md-editor__editor-wrapper .scrollbar)::before {
+      color: red;
     }
   }
 }
