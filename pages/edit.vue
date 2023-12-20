@@ -3,8 +3,12 @@ import { Upload as IconUpload } from '@icon-park/vue-next'
 import { init as initApi } from '~/apis/articles/init'
 import { save as saveApi } from '~/apis/articles/save'
 import { publish as publishApi } from '~/apis/articles/publish'
+import {
+  uploadArticles as uploadArticlesApi,
+  uploadCover as uploadCoverApi
+} from '~/apis/articles/upload'
 import type { UnwrapRef } from 'vue'
-import type { FormInstance } from 'ant-design-vue/es/form'
+import type { FormInstance, UploadProps } from 'ant-design-vue'
 import type { FormValidateError } from '~/types/form'
 import EditLevalFooter from '~/components/EditLevalFooter/EditLevalFooter.vue'
 
@@ -287,6 +291,35 @@ const withLoding = async (
   await fn()
   loading.value = false
 }
+
+/**
+ * 文章内上传图片
+ */
+const handleUploadImage = async (
+  event: Event,
+  insertImage: (data: { url: string; desc: string }) => void,
+  files: File[]
+) => {
+  // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
+  const { data, status } = await uploadArticlesApi(files[0])
+  if (status != 200) {
+    return message.error('上传失败，请稍后再试')
+  }
+  insertImage({
+    url: data.url,
+    desc: files[0].name
+  })
+}
+/**
+ * 上传封面
+ */
+const beforeCoverUpload: UploadProps['beforeUpload'] = async (file) => {
+  const res = await uploadCoverApi(file)
+  if (res.status != 200) {
+    return message.error('上传失败，请稍后再试')
+  }
+  data.cover = res.data.url
+}
 </script>
 
 <template>
@@ -340,14 +373,29 @@ const withLoding = async (
             class="editor"
             :class="data.content.length > rules.content.max ? 'status-error' : ''"
           >
-            <lazy-v-md-editor v-model="data.content"></lazy-v-md-editor>
+            <lazy-v-md-editor
+              v-model="data.content"
+              :disabled-menus="[]"
+              @upload-image="handleUploadImage"
+            ></lazy-v-md-editor>
           </div>
         </a-form-item>
         <h2>封面和摘要</h2>
         <a-row :gutter="10">
           <a-col class="grid-content" :span="5">
-            <a-upload class="upload">
-              <img v-if="data.cover" :src="data.cover" class="avatar" />
+            <a-upload
+              class="upload"
+              list-type="picture-card"
+              :before-upload="beforeCoverUpload"
+              :show-upload-list="false"
+            >
+              <a-image
+                v-if="data.cover"
+                :src="data.cover"
+                fit="cover"
+                class="cover"
+                :preview="false"
+              />
               <div v-else class="not_image">
                 <icon-upload size="35"></icon-upload>
                 拖拽或选择封面
@@ -408,13 +456,26 @@ const withLoding = async (
     margin: 20px 0 10px 0;
   }
   .upload {
-    border: 1px solid @black-opacity-2;
-    height: 100px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    :deep(.ant-upload) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100px;
+      border: 1px solid @black-opacity-2;
+      border-radius: 5px;
+      .ant-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
     .not_image {
       display: flex;
       flex-direction: column;
