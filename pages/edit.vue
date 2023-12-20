@@ -88,6 +88,7 @@ const rules = computed(() => {
   }
 })
 
+const loading = ref(true)
 const init = async () => {
   /**
    * 校验 editId
@@ -100,6 +101,7 @@ const init = async () => {
   if (res.status != 200) {
     return message.error('初始化失败')
   }
+  loading.value = false
   /**
    * 设置规则
    * todo: 动态获取规则
@@ -108,7 +110,7 @@ const init = async () => {
   /**
    * 有草稿
    */
-  if (res.data.edit) {
+  if (res.data?.edit) {
     const { title, content, desc, cover } = res.data.edit
     data.title = title
     data.content = content
@@ -120,7 +122,7 @@ const init = async () => {
   /**
    * 加载文章内容
    */
-  if (res.data.article) {
+  if (res.data?.article) {
     const { title, content, desc, cover } = res.data.article
     data.title = title
     data.content = content
@@ -325,111 +327,121 @@ const beforeCoverUpload: UploadProps['beforeUpload'] = async (file) => {
 <template>
   <div class="edit">
     <client-only>
-      <a-form
-        :model="data"
-        ref="formRef"
-        :rules="{
-          title: [
-            {
-              required: true,
-              message: '请输入标题'
-            },
-            {
-              min: rules.title.min,
-              // todo: 从后端获取规则，给文本框设置字数提示
-              max: rules.title.max,
-              message: `标题长度在${rules.title.min}~${rules.title.max}个字符`
-            }
-          ],
-          content: [
-            {
-              required: true,
-              message: '请输入内容'
-            },
-            {
-              min: rules.content.min,
-              message: `内容不能少于${rules.content.min}字`
-            },
-            {
-              max: 40000,
-              message: '内容不能超过四万字'
-            }
-          ],
-          desc: [{ min: 10, max: 100, message: '简介长度在10~100个字符' }]
-        }"
-      >
-        <a-form-item name="title">
-          <!-- todo: 不同编辑模式的切换 -->
-          <a-input
-            placeholder="在这里输入标题"
-            class="title_input"
-            v-model:value="data.title"
-            show-count
-            :maxlength="rules.title.max"
-          ></a-input>
-        </a-form-item>
-        <a-form-item name="content">
-          <div
-            class="editor"
-            :class="data.content.length > rules.content.max ? 'status-error' : ''"
-          >
-            <lazy-v-md-editor
-              v-model="data.content"
-              :disabled-menus="[]"
-              @upload-image="handleUploadImage"
-            ></lazy-v-md-editor>
-          </div>
-        </a-form-item>
-        <h2>封面和摘要</h2>
-        <a-row :gutter="10">
-          <a-col class="grid-content" :span="5">
-            <a-upload
-              class="upload"
-              list-type="picture-card"
-              :before-upload="beforeCoverUpload"
-              :show-upload-list="false"
+      <a-spin :spinning="loading">
+        <a-form
+          :model="data"
+          ref="formRef"
+          :rules="{
+            title: [
+              {
+                required: true,
+                message: '请输入标题'
+              },
+              {
+                min: rules.title.min,
+                // todo: 从后端获取规则，给文本框设置字数提示
+                max: rules.title.max,
+                message: `标题长度在${rules.title.min}~${rules.title.max}个字符`
+              }
+            ],
+            content: [
+              {
+                required: true,
+                message: '请输入内容'
+              },
+              {
+                min: rules.content.min,
+                message: `内容不能少于${rules.content.min}字`
+              },
+              {
+                max: 40000,
+                message: '内容不能超过四万字'
+              }
+            ],
+            desc: [{ min: 10, max: 100, message: '简介长度在10~100个字符' }]
+          }"
+        >
+          <a-form-item name="title">
+            <!-- todo: 不同编辑模式的切换 -->
+            <a-input
+              placeholder="在这里输入标题"
+              class="title_input"
+              v-model:value="data.title"
+              show-count
+              :maxlength="rules.title.max"
+            ></a-input>
+          </a-form-item>
+          <a-form-item name="content">
+            <div
+              class="editor"
+              :class="data.content.length > rules.content.max ? 'status-error' : ''"
             >
-              <a-image
-                v-if="data.cover"
-                :src="data.cover"
-                fit="cover"
-                class="cover"
-                :preview="false"
-              />
-              <div v-else class="not_image">
-                <icon-upload size="35"></icon-upload>
-                拖拽或选择封面
-              </div>
-            </a-upload>
-          </a-col>
-          <a-col class="grid-content" :span="19">
-            <a-form-item name="desc">
-              <a-textarea
-                class="desc"
-                v-model:value="data.desc"
-                show-count
-                :maxlength="rules.desc.max"
-              ></a-textarea>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <h2>文章设置</h2>
-        <div class="unfinished">开发中,敬请期待</div>
-        <a-form-item>
-          <div class="footer">
-            <a-button
-              type="primary"
-              @click="withLoding(save, saveLoading)"
-              :loading="saveLoading.value"
-              >存草稿</a-button
-            >
-            <a-button>预览</a-button>
-            <a-button @click="withLoding(publish, publishLoading)" :loading="publishLoading.value">
-              发布
-            </a-button>
-          </div>
-        </a-form-item>
-      </a-form>
+              <suspense>
+                <template #fallback>
+                  <a-spin class="editor-loading" v-if="!loading" />
+                </template>
+                <lazy-v-md-editor
+                  v-model="data.content"
+                  :disabled-menus="[]"
+                  @upload-image="handleUploadImage"
+                ></lazy-v-md-editor>
+              </suspense>
+            </div>
+          </a-form-item>
+          <h2>封面和摘要</h2>
+          <a-row :gutter="10">
+            <a-col class="grid-content" :span="5">
+              <a-upload
+                class="upload"
+                list-type="picture-card"
+                :before-upload="beforeCoverUpload"
+                :show-upload-list="false"
+              >
+                <a-image
+                  v-if="data.cover"
+                  :src="data.cover"
+                  fit="cover"
+                  class="cover"
+                  :preview="false"
+                />
+                <div v-else class="not_image">
+                  <icon-upload size="35"></icon-upload>
+                  拖拽或选择封面
+                </div>
+              </a-upload>
+            </a-col>
+            <a-col class="grid-content" :span="19">
+              <a-form-item name="desc">
+                <a-textarea
+                  class="desc"
+                  v-model:value="data.desc"
+                  show-count
+                  :maxlength="rules.desc.max"
+                ></a-textarea>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <h2>文章设置</h2>
+          <div class="unfinished">开发中,敬请期待</div>
+          <a-form-item>
+            <div class="footer">
+              <a-button
+                type="primary"
+                @click="withLoding(save, saveLoading)"
+                :loading="saveLoading.value"
+                >存草稿</a-button
+              >
+              <a-button>预览</a-button>
+              <a-button
+                @click="withLoding(publish, publishLoading)"
+                :loading="publishLoading.value"
+              >
+                发布
+              </a-button>
+            </div>
+          </a-form-item>
+        </a-form>
+      </a-spin>
     </client-only>
   </div>
   <!-- <EditLevalFooter :open="levalModel" /> -->
@@ -463,7 +475,6 @@ const beforeCoverUpload: UploadProps['beforeUpload'] = async (file) => {
       align-items: center;
       width: 100%;
       height: 100px;
-      border: 1px solid @black-opacity-2;
       border-radius: 5px;
       .ant-image {
         display: block;
@@ -511,6 +522,12 @@ const beforeCoverUpload: UploadProps['beforeUpload'] = async (file) => {
     }
   }
   .editor {
+    .editor-loading {
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .v-md-editor {
       min-height: 500px;
       :deep(.v-md-editor__editor-wrapper .scrollbar) {
