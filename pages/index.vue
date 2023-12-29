@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { BCard } from '@ltfei-blog/blogui'
+import { BCard, BCardFooterItem } from '@ltfei-blog/blogui'
 import { list as listApi } from '~/apis/articles/list'
+import { GoodTwo as IconGoodTwo, Comment as IconComment } from '@icon-park/vue-next'
 
 defineOptions({
   name: 'PageIndex'
@@ -25,7 +26,20 @@ const data = await useAsyncData('getArticles', () => listApi())
         :avatar="i.author_data.avatar"
         :cover="i.cover"
         :date="i.create_time"
-      ></b-card>
+      >
+        <template #footer>
+          <b-card-footer-item :text="i.likes_count?.toString() || '0'">
+            <template #icon>
+              <icon-good-two size="16" />
+            </template>
+          </b-card-footer-item>
+          <!-- <b-card-footer-item text="10">
+            <template #icon>
+              <icon-comment size="16" />
+            </template>
+          </b-card-footer-item> -->
+        </template>
+      </b-card>
     </div>
     <div class="sidebar">
       <index-sidebar />
