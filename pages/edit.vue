@@ -215,7 +215,7 @@ const publish = async () => {
 /**
  * 判断文章是否保存
  */
-let saved = false
+let saved = true
 const watchEdit = () => {
   saved = true
   const stop = watch(data, () => {

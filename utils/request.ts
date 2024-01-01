@@ -20,6 +20,18 @@ axiosRequest.interceptors.request.use((config) => {
   return config
 })
 
+axiosRequest.interceptors.response.use((data) => {
+  /**
+   * todo: 封装权限 让用户点击时直接跳转登录，而不需要发送请求
+   */
+  if (data.data.status == 4001) {
+    const router = useRouter()
+    router.replace('/login')
+    message.warn('请先登录')
+  }
+  return data
+})
+
 const request = async (AxiosRequestConfig: AxiosRequestConfig<any>) => {
   const { data: res } = await axiosRequest(AxiosRequestConfig)
   return res
