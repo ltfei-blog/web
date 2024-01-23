@@ -2,8 +2,12 @@ import { getUserInfo } from '~/apis/users/userInfo'
 import { useUserStore } from '~/store/user'
 
 export const useUserInfo = async () => {
-  const token = localStorage.getItem('token')
-  if (!token) {
+  try {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      return
+    }
+  } catch {
     return
   }
   const { user, isLogin } = useUserStore()

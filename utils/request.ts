@@ -25,6 +25,7 @@ axiosRequest.interceptors.response.use((data) => {
    * todo: 封装权限 让用户点击时直接跳转登录，而不需要发送请求
    */
   if (data.data.status == 4001) {
+    localStorage.removeItem('token')
     const router = useRouter()
     router.replace('/login')
     message.warn('请先登录')
