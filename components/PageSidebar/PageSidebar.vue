@@ -62,7 +62,10 @@ const like = async () => {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  pointer-events: none;
   .box {
+    pointer-events: all;
     display: flex;
     justify-content: space-around;
     flex-direction: column;

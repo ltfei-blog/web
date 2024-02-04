@@ -6,7 +6,7 @@ defineOptions({
 })
 
 const route = useRoute()
-const id = route.params.id as string
+const id = Number(route.params.id as string)
 
 const { data } = await detailsApi(id)
 
@@ -26,9 +26,10 @@ useSeoMeta({
       :username="data.author_data.username"
     />
     <lazy-v-md-preview :text="data.content" />
+    <page-footer :id="id" />
   </div>
   <client-only>
-    <page-sidebar :id="Number(id)" :likes="data.likes_count || 0" :liked="Boolean(data.liked)" />
+    <page-sidebar :id="id" :likes="data.likes_count || 0" :liked="Boolean(data.liked)" />
   </client-only>
 </template>
 
