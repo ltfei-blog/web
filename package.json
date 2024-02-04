@@ -52,7 +52,7 @@
     "@ctrl/tinycolor": "^3.6.0",
     "@icon-park/vue-next": "^1.4.2",
     "@kangc/v-md-editor": "^2.3.17",
-    "@ltfei-blog/blogui": "^0.2.2",
+    "@ltfei-blog/blogui": "^0.2.3",
     "axios": "^1.5.0",
     "codemirror": "^6.0.1",
     "dayjs": "^1.11.10",
