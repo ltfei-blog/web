@@ -1143,10 +1143,10 @@
   dependencies:
     "@lezer/common" "^1.0.0"
 
-"@ltfei-blog/blogui-components@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.npmmirror.com/@ltfei-blog/blogui-components/-/blogui-components-0.2.3.tgz#feee6399b60a62026c8b010c2fa00a5191074be6"
-  integrity sha512-M+djl9eAB+SFO9t27fraeVzAfDC16W+Dqi93ji/vTVLB65IPodpfQmFhhz67WxI3HDs0KGsCye17cfaPzupGXg==
+"@ltfei-blog/blogui-components@^0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@ltfei-blog/blogui-components/-/blogui-components-0.2.7.tgz#df1ad92633abdee150bc956fd398b3ddf614b30d"
+  integrity sha512-9ovYLmIk1MOF4O8VWQ9XWK/6hwQPzUBYiDsBMl4fleQz7T0Qo/gxH4dH9ASnRSQ8SsTkTeHUk0G5BdfKI3IxdQ==
   dependencies:
     "@ltfei-blog/blogui-utils" "^0.2.0"
 
@@ -1157,12 +1157,12 @@
   dependencies:
     dayjs "^1.11.9"
 
-"@ltfei-blog/blogui@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.npmmirror.com/@ltfei-blog/blogui/-/blogui-0.2.3.tgz#1215dfd84363046ff634c0320b0d9f12cbe803d3"
-  integrity sha512-hw8Lhlq/B7gM/iBVHk9D77x9gxN+X+lF7JBF35pEaTGV8IHpmpxEbltdUpgFFH7Q3wfB+puBqq5+Zt8WxqhU3w==
+"@ltfei-blog/blogui@0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@ltfei-blog/blogui/-/blogui-0.2.7.tgz#0b34408ff0f0833bed95535c5804b9256a51b3af"
+  integrity sha512-vMdJ2sw2paEDRcKrhHJJgvd6sk2UmItGExtsuRho++qED5ikLTn+kvPs/IlpG1pcNASllMV7TzqRGi7Mq7gf1g==
   dependencies:
-    "@ltfei-blog/blogui-components" "^0.2.3"
+    "@ltfei-blog/blogui-components" "^0.2.7"
     "@vue/runtime-core" "^3.3.4"
     vue "^3.3.4"
 
