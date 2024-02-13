@@ -17,6 +17,7 @@ defineOptions({
 })
 const props = defineProps<{
   id: number
+  author: number
 }>()
 
 const { user } = useUserStore()
@@ -128,6 +129,9 @@ const reply = async (e: CommentReplyEvent) => {
   <div class="page-footer">
     <h2 ref="commentRef" class="title">评论</h2>
     <b-comment :data="data?.data || []" @click-like="like" @reply="reply">
+      <template #user-tag="{ row }">
+        <a-tag v-if="row.userId == author" color="#e55">作者</a-tag>
+      </template>
       <template #likeIcon="{ row }">
         <!-- 
           todo: bug: 这里服务端先请求了一次，由于没有携带token，相应的都是没点赞，导致客户端渲染时，组件内接收到的是没点赞得数据，没有得到active的状态

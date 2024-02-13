@@ -26,7 +26,7 @@ useSeoMeta({
       :username="data.author_data.username"
     />
     <lazy-v-md-preview :text="data.content" />
-    <page-footer :id="id" />
+    <page-footer :id="id" :author="data.author" />
   </div>
   <client-only>
     <page-sidebar :id="id" :likes="data.likes_count || 0" :liked="Boolean(data.liked)" />
