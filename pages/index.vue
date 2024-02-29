@@ -33,11 +33,11 @@ const data = await useAsyncData('getArticles', () => listApi())
               <icon-good-two size="16" />
             </template>
           </b-card-footer-item>
-          <!-- <b-card-footer-item text="10">
+          <b-card-footer-item :text="i.comments_count.toString()">
             <template #icon>
               <icon-comment size="16" />
             </template>
-          </b-card-footer-item> -->
+          </b-card-footer-item>
         </template>
       </b-card>
     </div>

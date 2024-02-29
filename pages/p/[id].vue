@@ -29,7 +29,12 @@ useSeoMeta({
     <page-footer :id="id" :author="data.author" />
   </div>
   <client-only>
-    <page-sidebar :id="id" :likes="data.likes_count || 0" :liked="Boolean(data.liked)" />
+    <page-sidebar
+      :id="id"
+      :likes="data.likes_count || 0"
+      :liked="Boolean(data.liked)"
+      :comments="data.comments_count"
+    />
   </client-only>
 </template>
 

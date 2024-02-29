@@ -14,6 +14,7 @@ export const details = (
   last_edit_time?: number
   likes_count: number
   liked: boolean
+  comments_count: number
   author_data: {
     id: number
     username: string

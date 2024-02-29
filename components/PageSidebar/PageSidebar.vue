@@ -9,6 +9,7 @@ const props = defineProps<{
   id: number
   likes: number
   liked: boolean
+  comments: number
 }>()
 
 const data = reactive({
@@ -38,7 +39,7 @@ const like = async () => {
         </div>
         <div class="comment item">
           <icon-comment size="26"></icon-comment>
-          <div class="text">10</div>
+          <div class="text">{{ comments }}</div>
         </div>
         <!-- <div class="love"></div> -->
       </div>

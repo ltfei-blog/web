@@ -11,6 +11,7 @@ export const list = (): Response<
     create_time: string
     last_edit_time?: any
     likes_count: number
+    comments_count: number
     author_data: {
       id: number
       username: string
