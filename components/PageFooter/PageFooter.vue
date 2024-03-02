@@ -12,6 +12,7 @@ import { publish as publishApi } from '~/apis/comment/publish'
 import { GoodTwo as IconGoodTwo } from '@icon-park/vue-next'
 import { useUserStore } from '~/store/user'
 import { on } from '~/components/PageSidebar/event'
+import { scrollTo } from '~/utils/scrollTo'
 
 defineOptions({
   name: 'PageFooter'
@@ -22,7 +23,7 @@ const props = defineProps<{
 }>()
 
 const { user } = useUserStore()
-const commentRef = ref<HTMLElement | null>(null)
+const commentRef = ref()
 const commentTitleRef = ref<HTMLElement>()
 // const { data } = useAsyncData('commentData', () => listApi(props.id))
 const res = await listApi(props.id)
@@ -128,7 +129,15 @@ const reply: CommentReplyEventFn = async (e, clearInput) => {
   }
 }
 
-on('toComment', () => {})
+on('toComment', () => {
+  if (!commentTitleRef.value) {
+    return
+  }
+  const y = commentTitleRef.value?.offsetTop
+  // 留出Nav的高度+边距
+  scrollTo(y - 75)
+  commentRef.value?.focus()
+})
 </script>
 
 <template>
