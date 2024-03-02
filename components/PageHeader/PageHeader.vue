@@ -11,6 +11,8 @@ defineProps<{
   date: number
   avatar: string
   username: string
+  likes: number
+  comments: number
 }>()
 </script>
 
@@ -18,7 +20,7 @@ defineProps<{
   <h1 class="title">{{ title }}</h1>
   <div class="info">
     <div class="date">{{ dayjs(date).format('YYYY-MM-DD HH:mm') }}</div>
-    <div>1095阅读 · 24喜欢 · 0评论</div>
+    <div>1095阅读 · {{ likes }}喜欢 · {{ comments }}评论</div>
   </div>
   <div class="author">
     <div class="author-info">

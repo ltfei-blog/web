@@ -8,7 +8,8 @@ defineOptions({
 const route = useRoute()
 const id = Number(route.params.id as string)
 
-const { data } = await detailsApi(id)
+const res = await useAsyncData('getDetails', () => detailsApi(id))
+const data = res.data.value!.data
 
 useSeoMeta({
   title: `ltfei-blog ${data.title}`,
@@ -24,6 +25,8 @@ useSeoMeta({
       :date="data.create_time"
       :avatar="data.author_data.avatar"
       :username="data.author_data.username"
+      :likes="data.likes_count || 0"
+      :comments="data.comments_count"
     />
     <lazy-v-md-preview :text="data.content" />
     <page-footer :id="id" :author="data.author" />
@@ -31,8 +34,8 @@ useSeoMeta({
   <client-only>
     <page-sidebar
       :id="id"
-      :likes="data.likes_count || 0"
-      :liked="Boolean(data.liked)"
+      v-model:likes="data.likes_count"
+      v-model:liked="data.liked"
       :comments="data.comments_count"
     />
   </client-only>

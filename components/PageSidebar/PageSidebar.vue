@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { GoodTwo as IconGoodTwo, Comment as IconComment } from '@icon-park/vue-next'
 import { like as likeApi } from '~/apis/articles/like'
-import { emit } from './event'
+import { emit as emitEvent } from './event'
 
 defineOptions({
   name: 'PageSidebar'
 })
 
+// likes 变成 v-model
 const props = defineProps<{
   id: number
   likes: number
@@ -14,18 +15,34 @@ const props = defineProps<{
   comments: number
 }>()
 
-const data = reactive({
-  id: props.id,
-  likes: props.likes,
-  liked: props.liked
-})
-const like = async () => {
-  !data.liked ? data.likes++ : data.likes--
+const emit = defineEmits(['update:likes', 'update:liked'])
 
-  data.liked = !data.liked
+const likes = computed({
+  get() {
+    return props.likes || 0
+  },
+  set(value) {
+    console.log(value)
+
+    emit('update:likes', value)
+  }
+})
+const liked = computed({
+  get() {
+    return Boolean(props.liked)
+  },
+  set(value) {
+    emit('update:liked', value)
+  }
+})
+
+const like = async () => {
+  !liked.value ? likes.value++ : likes.value--
+
+  liked.value = !liked.value
   const res = await likeApi(props.id)
   if (res.status != 200) {
-    data.liked = res.data?.liked || !data.liked
+    liked.value = res.data?.liked || liked.value
     return message.error('点赞失败')
   }
 }
@@ -35,11 +52,11 @@ const like = async () => {
   <div class="sidebar-container">
     <div class="sidebar">
       <div class="box">
-        <div class="like item" :class="data.liked ? 'liked' : ''" @click="like">
+        <div class="like item" :class="liked ? 'liked' : ''" @click="like">
           <icon-good-two size="26"></icon-good-two>
-          <div class="text">{{ data.likes }}</div>
+          <div class="text">{{ likes }}</div>
         </div>
-        <div class="comment item" @click="emit('toComment')">
+        <div class="comment item" @click="emitEvent('toComment')">
           <icon-comment size="26"></icon-comment>
           <div class="text">{{ comments }}</div>
         </div>

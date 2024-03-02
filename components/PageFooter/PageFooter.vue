@@ -14,6 +14,8 @@ import { useUserStore } from '~/store/user'
 import { on } from '~/components/PageSidebar/event'
 import { scrollTo } from '~/utils/scrollTo'
 
+// todo: 同步 本组件评论 与 PageHeader PageSidebar 评论数量
+
 defineOptions({
   name: 'PageFooter'
 })
