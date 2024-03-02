@@ -4,13 +4,14 @@ import type {
   FooterIconItemClickEvent,
   Comment,
   CommentReply,
-  CommentReplyEvent
+  CommentReplyEventFn
 } from '@ltfei-blog/blogui'
 import { list as listApi } from '~/apis/comment/list'
 import { like as likeApi } from '~/apis/comment/like'
 import { publish as publishApi } from '~/apis/comment/publish'
 import { GoodTwo as IconGoodTwo } from '@icon-park/vue-next'
 import { useUserStore } from '~/store/user'
+import { on } from '~/components/PageSidebar/event'
 
 defineOptions({
   name: 'PageFooter'
@@ -22,6 +23,7 @@ const props = defineProps<{
 
 const { user } = useUserStore()
 const commentRef = ref<HTMLElement | null>(null)
+const commentTitleRef = ref<HTMLElement>()
 // const { data } = useAsyncData('commentData', () => listApi(props.id))
 const res = await listApi(props.id)
 const data = ref(res)
@@ -59,7 +61,7 @@ const like = async ({ id, value }: FooterIconItemClickEvent) => {
   }
 }
 
-const reply = async (e: CommentReplyEvent) => {
+const reply: CommentReplyEventFn = async (e, clearInput) => {
   // 通过回复的id找到主id
   const comment = findComment(data.value?.data!, e.id)
 
@@ -80,6 +82,8 @@ const reply = async (e: CommentReplyEvent) => {
   if (res.status != 200) {
     message.error('评论发送失败')
   }
+
+  clearInput()
 
   // 发送主评论直接追加到评论列表前面
   if (!e.id) {
@@ -123,12 +127,14 @@ const reply = async (e: CommentReplyEvent) => {
     })
   }
 }
+
+on('toComment', () => {})
 </script>
 
 <template>
   <div class="page-footer">
-    <h2 ref="commentRef" class="title">评论</h2>
-    <b-comment :data="data?.data || []" @click-like="like" @reply="reply">
+    <h2 class="title" ref="commentTitleRef">评论</h2>
+    <b-comment :data="data?.data || []" @click-like="like" @reply="reply" ref="commentRef">
       <template #user-tag="{ row }">
         <a-tag v-if="row.userId == author" color="#e55">作者</a-tag>
       </template>
