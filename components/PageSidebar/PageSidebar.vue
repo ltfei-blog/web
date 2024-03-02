@@ -7,11 +7,10 @@ defineOptions({
   name: 'PageSidebar'
 })
 
-// likes 变成 v-model
 const props = defineProps<{
   id: number
-  likes: number
-  liked: boolean
+  likes: number | null
+  liked: boolean | number | null
   comments: number
 }>()
 

@@ -8,8 +8,8 @@ defineOptions({
 const route = useRoute()
 const id = Number(route.params.id as string)
 
-const res = await useAsyncData('getDetails', () => detailsApi(id))
-const data = res.data.value!.data
+const res = await detailsApi(id)
+const data = reactive(res.data)
 
 useSeoMeta({
   title: `ltfei-blog ${data.title}`,
