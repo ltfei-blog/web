@@ -22,14 +22,21 @@ defineOptions({
 const qrCode = ref()
 const loading = ref(true)
 let uuid: string
+const loginStatusView = ref<'failed' | 'tips' | 'success' | null>(null)
+const message = ref('')
 
 const init = async () => {
+  loading.value = true
+  loginStatusView.value = null
+  message.value = ''
+
   const { data } = await initApi()
   uuid = data.uuid
 
   if (data.loginMethods.includes('wx_miniprogram')) {
     await getWxQrcode()
   }
+  loading.value = false
 }
 if (process.client) {
   init()
@@ -37,6 +44,7 @@ if (process.client) {
 
 // qq登录
 const qqConnectLogin = async () => {
+  loading.value = true
   const { data } = await qqConnectLoginApi(uuid!)
   location.href = data.qqLoginUrl
 }
@@ -48,12 +56,8 @@ const getWxQrcode = async () => {
     qrCode.value = url
     console.log(qrCode.value)
   })
-
-  loading.value = false
 }
 
-const loginStatusView = ref<'failed' | 'tips' | 'success' | null>(null)
-const message = ref('')
 const getStatus = async () => {
   const res = await getStatusApi(uuid!)
   const status = res.data.status
@@ -131,15 +135,16 @@ if (process.client) {
               fill="var(--success)"
               :strokeWidth="6"
             />
-            {{ message }}
+            <span class="message">{{ message }}</span>
+            <a-button @click="init">刷新</a-button>
           </div>
           <div class="status login-tips" v-if="loginStatusView == 'tips'">
-            <icon-attention theme="outline" size="90" fill="var(--success)" :strokeWidth="6" />
-            {{ message }}
+            <icon-attention theme="outline" size="90" fill="var(--warning)" :strokeWidth="6" />
+            <span class="message">{{ message }}</span>
           </div>
           <div class="status login-success" v-if="loginStatusView == 'success'">
-            <icon-check-one theme="outline" size="90" fill="var(--success)" :strokeWidth="6" />
-            {{ message }}
+            <icon-check-one theme="outline" size="90" fill="var(--error)" :strokeWidth="6" />
+            <span class="message">{{ message }}</span>
           </div>
         </div>
         <div class="other">
@@ -179,6 +184,9 @@ if (process.client) {
       flex-direction: column;
       align-items: center;
       margin: 25px 0;
+      .message {
+        margin: 8px 0;
+      }
     }
   }
   .other {
@@ -187,6 +195,7 @@ if (process.client) {
     h3 {
       font-size: 16px;
       font-weight: 500;
+      text-align: center;
       color: @text-color-regular;
     }
     .other-method.qq {
