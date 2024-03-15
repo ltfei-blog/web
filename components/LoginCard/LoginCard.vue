@@ -19,11 +19,21 @@ defineOptions({
  * 该组件可在 /login 路由中展示，todo: 也可以弹窗形式展示
  */
 
-//  初始化登录 获取 uuid
-const initData = await useAsyncData('init', () => initApi())
-const uuid = initData.data?.value?.data.uuid
 const qrCode = ref()
 const loading = ref(true)
+let uuid: string
+
+const init = async () => {
+  const { data } = await initApi()
+  uuid = data.uuid
+
+  if (data.loginMethods.includes('wx_miniprogram')) {
+    await getWxQrcode()
+  }
+}
+if (process.client) {
+  init()
+}
 
 // qq登录
 const qqConnectLogin = async () => {
@@ -40,10 +50,6 @@ const getWxQrcode = async () => {
   })
 
   loading.value = false
-}
-
-if (process.client && initData.data?.value?.data.loginMethods.includes('wx_miniprogram')) {
-  await getWxQrcode()
 }
 
 const loginStatusView = ref<'failed' | 'tips' | 'success' | null>(null)
@@ -107,11 +113,17 @@ if (process.client) {
 
 <template>
   <client-only>
-    <a-spin :spinning="loading">
-      <div class="login-card">
+    <div class="login-card">
+      <a-spin class="loading" :spinning="loading">
         <div class="qrcode">
           <h3>微信扫码登录</h3>
-          <img :src="qrCode" alt="" v-if="loginStatusView == null" />
+          <!-- <img :src="qrCode" alt="" v-if="loginStatusView == null" /> -->
+          <a-image
+            class="qrcode-image"
+            :src="qrCode"
+            :preview="false"
+            v-if="loginStatusView == null"
+          />
           <div class="status login-failed" v-if="loginStatusView == 'failed'">
             <icon-emotion-unhappy
               theme="outline"
@@ -135,8 +147,8 @@ if (process.client) {
           <div class="other-method qq" @click="qqConnectLogin">qq登录</div>
         </div>
         <div class="tips"></div>
-      </div>
-    </a-spin>
+      </a-spin>
+    </div>
   </client-only>
 </template>
 
@@ -150,14 +162,16 @@ if (process.client) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 100px auto;
 
   .qrcode {
     width: 230px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    img {
-      width: 80%;
+    :deep(.qrcode-image) {
+      width: 180px;
+      height: 180px;
       margin-top: 10px;
     }
     .status {
