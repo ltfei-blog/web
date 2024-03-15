@@ -11,6 +11,7 @@ import {
   EmotionUnhappy as IconEmotionUnhappy,
   Attention as IconAttention
 } from '@icon-park/vue-next'
+import { useUserInfo } from '~/utils/userInfo'
 
 defineOptions({
   name: 'LoginCard'
@@ -77,9 +78,10 @@ const getStatus = async () => {
     },
     [loginStatus.loginSucceed]: () => {
       loginStatusView.value = 'success'
+      clearInterval(interval)
       message.value = '登录成功'
       localStorage.setItem('token', res.data.token!)
-      clearInterval(interval)
+      useUserInfo()
       setTimeout(() => {
         router.push('/')
       }, 2000)
