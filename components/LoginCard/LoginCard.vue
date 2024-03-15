@@ -129,12 +129,7 @@ if (process.client) {
             v-if="loginStatusView == null"
           />
           <div class="status login-failed" v-if="loginStatusView == 'failed'">
-            <icon-emotion-unhappy
-              theme="outline"
-              size="90"
-              fill="var(--success)"
-              :strokeWidth="6"
-            />
+            <icon-emotion-unhappy theme="outline" size="90" fill="var(--error)" :strokeWidth="6" />
             <span class="message">{{ message }}</span>
             <a-button @click="init">刷新</a-button>
           </div>
@@ -143,15 +138,17 @@ if (process.client) {
             <span class="message">{{ message }}</span>
           </div>
           <div class="status login-success" v-if="loginStatusView == 'success'">
-            <icon-check-one theme="outline" size="90" fill="var(--error)" :strokeWidth="6" />
+            <icon-check-one theme="outline" size="90" fill="var(--success)" :strokeWidth="6" />
             <span class="message">{{ message }}</span>
           </div>
         </div>
         <div class="other">
           <h3>其他方式登录</h3>
-          <div class="other-method qq" @click="qqConnectLogin">qq登录</div>
+          <div class="other-method qq" @click="qqConnectLogin">
+            <img src="../../assets/01_qq_logo.png" alt="" />
+          </div>
         </div>
-        <div class="tips"></div>
+        <div class="tips">未注册用户将自动注册</div>
       </a-spin>
     </div>
   </client-only>
@@ -171,6 +168,7 @@ if (process.client) {
 
   .qrcode {
     width: 230px;
+    height: 220px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -198,9 +196,32 @@ if (process.client) {
       text-align: center;
       color: @text-color-regular;
     }
+
     .other-method.qq {
       text-align: center;
+      background-color: rgb(0, 153, 255);
+      width: 80px;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+      margin: 0 auto;
+      margin-top: 5px;
+      cursor: pointer;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
     }
+  }
+  .tips {
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center;
+    color: @text-color-regular;
   }
 }
 </style>
