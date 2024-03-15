@@ -55,7 +55,6 @@ const getWxQrcode = async () => {
   const url = URL.createObjectURL(new Blob([res]))
   nextTick(() => {
     qrCode.value = url
-    console.log(qrCode.value)
   })
 }
 
