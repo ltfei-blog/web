@@ -24,6 +24,7 @@ const loading = ref(true)
 let uuid: string
 const loginStatusView = ref<'failed' | 'tips' | 'success' | null>(null)
 const message = ref('')
+const router = useRouter()
 
 const init = async () => {
   loading.value = true
@@ -78,7 +79,11 @@ const getStatus = async () => {
     [loginStatus.loginSucceed]: () => {
       loginStatusView.value = 'success'
       message.value = '登录成功'
+      localStorage.setItem('token', res.data.token!)
       clearInterval(interval)
+      setTimeout(() => {
+        router.push('/')
+      }, 2000)
     },
     [loginStatus.loginFailedUserCancel]: () => {
       loginStatusView.value = 'failed'
@@ -131,7 +136,7 @@ if (process.client) {
           <div class="status login-failed" v-if="loginStatusView == 'failed'">
             <icon-emotion-unhappy theme="outline" size="90" fill="var(--error)" :strokeWidth="6" />
             <span class="message">{{ message }}</span>
-            <a-button @click="init">刷新</a-button>
+            <a-button @click="init" type="primary">刷新</a-button>
           </div>
           <div class="status login-tips" v-if="loginStatusView == 'tips'">
             <icon-attention theme="outline" size="90" fill="var(--warning)" :strokeWidth="6" />

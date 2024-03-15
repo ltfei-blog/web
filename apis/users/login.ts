@@ -70,7 +70,7 @@ export const loginStatus = {
   loginFailedTimeout: 22
 }
 
-export const getStatus = (uuid: string): Response<{ status: number }> => {
+export const getStatus = (uuid: string): Response<{ status: number; token?: string }> => {
   return axiosRequest({
     url: '/users/login/getStatus',
     method: 'post',
