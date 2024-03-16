@@ -2,7 +2,14 @@
 import { BAvatar } from '@ltfei-blog/blogui'
 import { useUserStore } from '~/store/user'
 import { User as IconUser } from '@icon-park/vue-next'
-import { getMember as getMemberApi, MemberData } from '~/apis/users/member'
+import { BCard, BCardFooterItem } from '@ltfei-blog/blogui'
+import { GoodTwo as IconGoodTwo, Comment as IconComment } from '@icon-park/vue-next'
+import {
+  getMember as getMemberApi,
+  MemberData,
+  getPost as getPostApi,
+  PostData
+} from '~/apis/users/member'
 
 defineOptions({
   name: 'PageUser'
@@ -23,11 +30,15 @@ const data = ref<MemberData>({
   id: 0,
   register_date: 0
 })
+const posts = ref<PostData[]>([])
 
 if (id || process.client) {
   // todo: 未登录的情况，跳转登录
   const res = await getMemberApi(Number(id))
   data.value = res.data
+
+  const postsData = await getPostApi(Number(id))
+  posts.value = postsData.data
 }
 
 const activeKey = ref('1')
@@ -74,9 +85,37 @@ const activeKey = ref('1')
     </div>
     <div class="container">
       <a-tabs v-model:activeKey="activeKey" class="tabs">
-        <a-tab-pane key="1" tab="Tab 1">Content of Tab Pane 1</a-tab-pane>
-        <a-tab-pane key="2" tab="Tab 2" force-render>Content of Tab Pane 2</a-tab-pane>
-        <a-tab-pane key="3" tab="Tab 3">Content of Tab Pane 3</a-tab-pane>
+        <a-tab-pane key="1" tab="投稿">
+          <div class="tab tab-post">
+            <b-card
+              v-for="i in posts"
+              :key="i.id"
+              :title="i.title"
+              :to="`/p/${i.id}`"
+              router
+              :auto-collapse="470"
+              :desc="i.desc"
+              :viewUser="false"
+              :cover="i.cover"
+              :date="i.create_time"
+            >
+              <template #footer>
+                <b-card-footer-item :text="i.likes_count?.toString() || '0'">
+                  <template #icon>
+                    <icon-good-two size="16" />
+                  </template>
+                </b-card-footer-item>
+                <b-card-footer-item :text="i.comments_count.toString()">
+                  <template #icon>
+                    <icon-comment size="16" />
+                  </template>
+                </b-card-footer-item>
+              </template>
+            </b-card>
+          </div>
+        </a-tab-pane>
+        <!-- <a-tab-pane key="2" tab="Tab 2" force-render>Content of Tab Pane 2</a-tab-pane>
+        <a-tab-pane key="3" tab="Tab 3">Content of Tab Pane 3</a-tab-pane> -->
       </a-tabs>
       <div class="sidebar"></div>
     </div>
@@ -144,8 +183,25 @@ const activeKey = ref('1')
     .tabs {
       background-color: @bg-color;
       flex: 1;
-      padding: 0 10px;
       box-sizing: border-box;
+      // tab标签栏置顶
+      :deep(.ant-tabs-nav) {
+        position: sticky;
+        top: 60px;
+        background-color: @bg-color;
+        z-index: 90;
+        padding: 0 10px;
+      }
+
+      .tab-post {
+        display: flex;
+        flex-direction: column;
+        .b-card {
+          padding: 8px 20px;
+          border-bottom: @black-opacity-1 1px solid;
+          border-radius: 0px;
+        }
+      }
     }
     .sidebar {
       background-color: @bg-color;

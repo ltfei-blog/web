@@ -21,3 +21,25 @@ export const getMember = (id?: number): Response<MemberData> => {
     }
   })
 }
+
+export interface PostData {
+  id: number
+  title: string
+  cover?: string
+  desc: string
+  status: number
+  author: number
+  create_time: number
+  last_edit_time?: number
+  likes_count: number
+  comments_count: number
+}
+export const getPost = (id?: number): Response<PostData[]> => {
+  return axiosRequest({
+    url: '/users/member/getPost',
+    method: 'post',
+    data: {
+      id
+    }
+  })
+}
