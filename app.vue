@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useThemes } from '~/utils/theme'
-import { useUserInfo } from '~/utils/userInfo'
+import { useUserStore } from '~/store/user'
 import '@ltfei-blog/blogui/dist/style.css'
 defineOptions({
   name: 'app'
 })
 const appConfig = useAppConfig()
 const { theme } = useThemes(appConfig.theme)
+const { useUserInfo } = useUserStore()
 useUserInfo()
 </script>
 

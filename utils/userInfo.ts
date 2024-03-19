@@ -1,7 +1,7 @@
-import { getUserInfo } from '~/apis/users/userInfo'
+import { getUserInfo as getUserInfoApi } from '~/apis/users/userInfo'
 import { useUserStore } from '~/store/user'
 
-export const useUserInfo = async () => {
+export const getUserInfo = async () => {
   try {
     const token = localStorage.getItem('token')
     if (!token) {
@@ -11,9 +11,11 @@ export const useUserInfo = async () => {
     return
   }
   const { user, isLogin } = useUserStore()
-  const { data, status } = await getUserInfo()
+  const { data, status } = await getUserInfoApi()
   if (status == 200) {
     user.value = data
     isLogin.value = true
+  } else {
+    isLogin.value = false
   }
 }

@@ -8,7 +8,7 @@ export const getUserInfo = (): Response<{
   gender?: any
   register_date: string
   last_login_date?: any
-  status?: any
+  status: number
   avatar_pendant?: any
 }> => {
   return request({

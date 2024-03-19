@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { qqConnectLogin } from '~/apis/users/login'
-import { useUserInfo } from '~/utils/userInfo'
+import { getUserInfo } from '~/utils/userInfo'
 defineOptions({
   name: 'qqAccessCallback'
 })
@@ -15,7 +15,7 @@ const login = async () => {
     return message.error(status + ' 登录失败 ' + (msg || ''))
   }
   localStorage.setItem('token', data.token)
-  useUserInfo()
+  getUserInfo()
   message.success('登录成功')
   router.push('/')
 }

@@ -17,11 +17,36 @@ defineOptions({
 useSeoMeta({
   title: '个人空间'
 })
-const { isLogin } = useUserStore()
-const route = useRoute()
 
+definePageMeta({
+  middleware: [
+    async (to) => {
+      const { isLogin, useUserInfo, user } = useUserStore()
+      await useUserInfo()
+      const id = to.params.id
+
+      /**
+       * 没有id(访问的不是其他人的主页)
+       * 且没有登录(访问的不是自己的主页)
+       */
+      if (!id && !isLogin.value) {
+        return navigateTo('/login')
+      }
+      // 已经登录了的 跳转到自己的主页
+      if (!id) {
+        return navigateTo({
+          path: '/user/' + user.value.id
+        })
+      }
+
+      return
+    }
+  ]
+})
+
+const route = useRoute()
+const { isLogin } = useUserStore()
 const id = route.params.id as string
-console.log(id)
 
 const data = ref<MemberData>({
   username: '未登录',
@@ -33,7 +58,6 @@ const data = ref<MemberData>({
 const posts = ref<PostData[]>([])
 
 if (id || process.client) {
-  // todo: 未登录的情况，跳转登录
   const res = await getMemberApi(Number(id))
   data.value = res.data
 
