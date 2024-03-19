@@ -31,7 +31,6 @@ export const useUserStore = () => {
       await getUserInfo()
       loading.value = false
     }
-    console.log(isLogin.value)
   }
 
   return {

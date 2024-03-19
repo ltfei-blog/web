@@ -25,11 +25,6 @@ definePageMeta({
       await useUserInfo()
       const id = to.params.id
 
-      if (!id && process.server) {
-        // todo: 问题：服务端拿不到用户id，客户端拿到id重定向后，仍然显示服务端被拒绝的画面，而服务端不拒绝，会导致渲染画面不一致导致报错
-        return false
-      }
-
       /**
        * 没有id(访问的不是其他人的主页)
        * 且没有登录(访问的不是自己的主页)

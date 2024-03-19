@@ -11,9 +11,25 @@ import type { UnwrapRef } from 'vue'
 import type { FormInstance, UploadProps } from 'ant-design-vue'
 import type { FormValidateError } from '~/types/form'
 import EditLevalFooter from '~/components/EditLevalFooter/EditLevalFooter.vue'
+import { useUserStore } from '~/store/user'
 
 defineOptions({
   name: 'PageEdit'
+})
+
+definePageMeta({
+  middleware: [
+    async () => {
+      const { isLogin, useUserInfo } = useUserStore()
+      await useUserInfo()
+
+      if (!isLogin.value) {
+        return navigateTo('/login')
+      } else {
+        return
+      }
+    }
+  ]
 })
 
 const router = useRouter()
@@ -132,9 +148,7 @@ const init = async () => {
   }
 }
 
-if (process.client) {
-  init()
-}
+init()
 
 /**
  * todo: 验证失败时滚动到第一个异常的地方
