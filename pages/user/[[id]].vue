@@ -14,9 +14,6 @@ import {
 defineOptions({
   name: 'PageUser'
 })
-useSeoMeta({
-  title: '个人空间'
-})
 
 definePageMeta({
   middleware: [
@@ -57,13 +54,15 @@ const data = ref<MemberData>({
 })
 const posts = ref<PostData[]>([])
 
-if (id || process.client) {
-  const res = await getMemberApi(Number(id))
-  data.value = res.data
+const res = await getMemberApi(Number(id))
+data.value = res.data
 
-  const postsData = await getPostApi(Number(id))
-  posts.value = postsData.data
-}
+const postsData = await getPostApi(Number(id))
+posts.value = postsData.data
+
+useSeoMeta({
+  title: data.value.username + '的个人空间'
+})
 
 const activeKey = ref('1')
 </script>
