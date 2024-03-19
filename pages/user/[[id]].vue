@@ -93,7 +93,10 @@ const activeKey = ref('1')
         </client-only>
         <div class="operation">
           <client-only>
-            <a-button v-if="id == user.id.toString()">编辑资料</a-button>
+            <!--  -->
+            <EditUserInfo v-if="id == user.id.toString()">
+              <a-button>编辑资料</a-button>
+            </EditUserInfo>
             <template v-else>
               <a-button>关注</a-button>
               <!-- <a-button>取消关注</a-button> -->

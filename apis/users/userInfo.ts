@@ -4,8 +4,9 @@ export const getUserInfo = (): Response<{
   id: number
   username: string
   avatar: string
-  city?: any
-  gender?: any
+  city?: string
+  gender: number
+  desc: string
   register_date: string
   last_login_date?: any
   status: number
@@ -13,6 +14,20 @@ export const getUserInfo = (): Response<{
 }> => {
   return request({
     url: '/users/userInfo',
+    method: 'POST'
+  })
+}
+
+export const editUserInfo = (data: {
+  username?: string
+  avatar?: string
+  city?: string
+  gender?: number
+  desc?: string
+}): Response<{}> => {
+  return request({
+    url: '/users/editUserInfo',
+    data,
     method: 'POST'
   })
 }
