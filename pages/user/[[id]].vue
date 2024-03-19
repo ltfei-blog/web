@@ -10,6 +10,7 @@ import {
   getPost as getPostApi,
   PostData
 } from '~/apis/users/member'
+import { Female as IconFemale, Male as IconMale } from '@icon-park/vue-next'
 
 defineOptions({
   name: 'PageUser'
@@ -55,6 +56,7 @@ const data = ref<MemberData>({
   get_likes: 0,
   id: 0,
   desc: '',
+  gender: 2,
   register_date: 0,
   followers: 0,
   following: 0
@@ -91,7 +93,25 @@ const activeKey = ref('1')
               </template>
             </div>
             <div class="text">
-              <div class="username">{{ data.username }}</div>
+              <div class="username">
+                {{ data.username }}
+                <div class="gender">
+                  <icon-female
+                    v-if="data.gender == 0"
+                    theme="outline"
+                    size="18"
+                    fill="#f51279"
+                    :strokeWidth="4"
+                  />
+                  <icon-male
+                    v-if="data.gender == 1"
+                    theme="outline"
+                    size="18"
+                    fill="#128EF5"
+                    :strokeWidth="4"
+                  />
+                </div>
+              </div>
               <div class="desc">{{ data.desc || '这家伙很懒，什么都没写' }}</div>
             </div>
           </div>
@@ -190,6 +210,11 @@ const activeKey = ref('1')
           .username {
             font-size: 20px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            .gender {
+              margin-left: 3px;
+            }
           }
           .desc {
             font-size: 16px;
