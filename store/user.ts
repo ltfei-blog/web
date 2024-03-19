@@ -1,19 +1,9 @@
 import { getUserInfo } from '~/utils/userInfo'
+import type { UserInfo } from '~/apis/users/userInfo'
 
 export const useUserStore = () => {
   const isLogin = useState<boolean | null>('isLogin', () => null)
-  const user = useState<{
-    id: number
-    username: string
-    avatar: string
-    city?: string
-    gender: number
-    desc: string
-    register_date: string
-    last_login_date?: any
-    status: number
-    avatar_pendant?: any
-  }>('user')
+  const user = useState<UserInfo>('user')
   const loading = useState('loading', () => false)
 
   /**

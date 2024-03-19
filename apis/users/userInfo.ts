@@ -1,6 +1,6 @@
 import request, { Response } from '~/utils/request'
 
-export const getUserInfo = (): Response<{
+export interface UserInfo {
   id: number
   username: string
   avatar: string
@@ -11,7 +11,9 @@ export const getUserInfo = (): Response<{
   last_login_date?: any
   status: number
   avatar_pendant?: any
-}> => {
+}
+
+export const getUserInfo = (): Response<UserInfo> => {
   return request({
     url: '/users/userInfo',
     method: 'POST'
