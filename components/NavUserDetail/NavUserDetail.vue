@@ -16,6 +16,7 @@ defineProps<{
   get_likes: number
   followers: number
   following: number
+  username: string
 }>()
 
 const visible = ref(false)
@@ -42,7 +43,7 @@ const theme = inject<'dark' | 'light'>('themeMode')
     <a-tooltip v-model:open="visible" color="var(--bg-color)" overlayClassName="tooltip-overlay">
       <template #title>
         <div class="detail">
-          <div class="username">username</div>
+          <div class="username">{{ username }}</div>
           <div class="data">
             <div class="item">
               <div class="name">关注</div>

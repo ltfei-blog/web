@@ -21,6 +21,7 @@ const { isLogin, user } = useUserStore()
           :get_likes="user.get_likes"
           :followers="user.followers"
           :following="user.following"
+          :username="user.username"
         />
       </nuxt-link>
     </client-only>
