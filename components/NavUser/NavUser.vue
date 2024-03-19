@@ -16,7 +16,7 @@ const { isLogin, user } = useUserStore()
       <nuxt-link v-if="!isLogin" to="/login" class="to-login-icon">
         <icon-user></icon-user>
       </nuxt-link>
-      <nuxt-link v-else to="/user">
+      <nuxt-link v-else :to="`/user/${user.id}`">
         <b-avatar :src="user.avatar"></b-avatar>
       </nuxt-link>
     </client-only>
