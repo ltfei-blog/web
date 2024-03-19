@@ -42,7 +42,7 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { isLogin } = useUserStore()
+const { isLogin, user } = useUserStore()
 const id = route.params.id as string
 
 const data = ref<MemberData>({
@@ -50,7 +50,8 @@ const data = ref<MemberData>({
   avatar: '',
   get_likes: 0,
   id: 0,
-  register_date: 0
+  register_date: 0,
+  fans: 0
 })
 const posts = ref<PostData[]>([])
 
@@ -60,15 +61,17 @@ data.value = res.data
 const postsData = await getPostApi(Number(id))
 posts.value = postsData.data
 
-useSeoMeta({
-  title: data.value.username + '的个人空间'
-})
+// todo: 未找到用户/用户状态异常的判断
+data.value &&
+  useSeoMeta({
+    title: data.value.username + '的个人空间'
+  })
 
 const activeKey = ref('1')
 </script>
 
 <template>
-  <div class="page-user">
+  <div class="page-user" v-if="data">
     <div class="user">
       <div class="top">
         <client-only>
@@ -88,7 +91,13 @@ const activeKey = ref('1')
           </div>
         </client-only>
         <div class="operation">
-          <a-button>编辑资料</a-button>
+          <client-only>
+            <a-button v-if="id == user.id.toString()">编辑资料</a-button>
+            <template v-else>
+              <a-button>关注</a-button>
+              <!-- <a-button>取消关注</a-button> -->
+            </template>
+          </client-only>
         </div>
       </div>
       <div class="data">
@@ -102,7 +111,7 @@ const activeKey = ref('1')
         </div>
         <div class="item">
           <div class="name">粉丝</div>
-          <div class="value">0</div>
+          <div class="value">{{ data.fans }}</div>
         </div>
       </div>
     </div>

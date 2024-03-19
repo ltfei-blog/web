@@ -10,6 +10,7 @@ export interface MemberData {
   status?: number
   avatar_pendant?: string
   get_likes: number
+  fans: number
 }
 
 export const getMember = (id?: number): Response<MemberData> => {
