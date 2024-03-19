@@ -18,6 +18,10 @@ defineOptions({
 definePageMeta({
   middleware: [
     async (to) => {
+      // 这里关闭了ssr 还是会报500
+      if (process.server) {
+        return
+      }
       const { isLogin, useUserInfo, user } = useUserStore()
       await useUserInfo()
       const id = to.params.id
