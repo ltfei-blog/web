@@ -51,7 +51,8 @@ const data = ref<MemberData>({
   get_likes: 0,
   id: 0,
   register_date: 0,
-  fans: 0
+  followers: 0,
+  following: 0
 })
 const posts = ref<PostData[]>([])
 
@@ -107,11 +108,11 @@ const activeKey = ref('1')
         </div>
         <div class="item">
           <div class="name">关注</div>
-          <div class="value">0</div>
+          <div class="value">{{ data.following }}</div>
         </div>
         <div class="item">
           <div class="name">粉丝</div>
-          <div class="value">{{ data.fans }}</div>
+          <div class="value">{{ data.followers }}</div>
         </div>
       </div>
     </div>
