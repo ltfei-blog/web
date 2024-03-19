@@ -11,15 +11,16 @@ const { isLogin, user } = useUserStore()
 
 <template>
   <div class="nav-user">
-    <nuxt-link to="/edit">编辑</nuxt-link>
     <client-only>
       <nuxt-link v-if="!isLogin" to="/login" class="to-login-icon">
         <icon-user></icon-user>
       </nuxt-link>
       <nuxt-link v-else :to="`/user/${user.id}`">
-        <b-avatar :src="user.avatar"></b-avatar>
+        <NavUserDetail :src="user.avatar" />
       </nuxt-link>
     </client-only>
+
+    <a-button type="primary">投稿</a-button>
   </div>
 </template>
 
