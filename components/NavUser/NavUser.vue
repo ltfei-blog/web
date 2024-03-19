@@ -16,7 +16,12 @@ const { isLogin, user } = useUserStore()
         <icon-user></icon-user>
       </nuxt-link>
       <nuxt-link v-else :to="`/user/${user.id}`">
-        <NavUserDetail :src="user.avatar" />
+        <NavUserDetail
+          :src="user.avatar"
+          :get_likes="user.get_likes"
+          :followers="user.followers"
+          :following="user.following"
+        />
       </nuxt-link>
     </client-only>
 

@@ -7,6 +7,9 @@ defineOptions({
 
 defineProps<{
   src: string
+  get_likes: number
+  followers: number
+  following: number
 }>()
 
 const visible = ref(false)
@@ -21,15 +24,15 @@ const visible = ref(false)
           <div class="data">
             <div class="item">
               <div class="name">关注</div>
-              <div class="value">0</div>
+              <div class="value">{{ following }}</div>
             </div>
             <div class="item">
               <div class="name">粉丝</div>
-              <div class="value">0</div>
+              <div class="value">{{ followers }}</div>
             </div>
             <div class="item">
               <div class="name">获赞</div>
-              <div class="value">0</div>
+              <div class="value">{{ get_likes }}</div>
             </div>
           </div>
           <div class="options">

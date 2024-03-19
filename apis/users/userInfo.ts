@@ -11,6 +11,9 @@ export interface UserInfo {
   last_login_date?: any
   status: number
   avatar_pendant?: any
+  get_likes: number
+  followers: number
+  following: number
 }
 
 export const getUserInfo = (): Response<UserInfo> => {
