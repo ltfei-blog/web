@@ -22,8 +22,8 @@ export default defineAppConfig({
       info: '#42b8dd',
       white: '#fff',
       black: '#000',
-      'bg-color': '#000',
-      'bg-color-page': '#111',
+      'bg-color': '#333',
+      'bg-color-page': '#222',
       'text-color': '#fff'
     }
   },

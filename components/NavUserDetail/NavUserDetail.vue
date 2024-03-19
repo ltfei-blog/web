@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { BAvatar } from '@ltfei-blog/blogui'
-import { User as IconUser, Editor as IconEditor } from '@icon-park/vue-next'
+import {
+  User as IconUser,
+  Editor as IconEditor,
+  Moon as IconMoon,
+  Sun as IconSun
+} from '@icon-park/vue-next'
+
 defineOptions({
   name: 'NavUserDetail'
 })
@@ -27,6 +33,8 @@ const options = [
     to: '/user'
   }
 ]
+
+const theme = inject<'dark' | 'light'>('themeMode')
 </script>
 
 <template>
@@ -48,6 +56,13 @@ const options = [
               <div class="name">获赞</div>
               <div class="value">{{ get_likes }}</div>
             </div>
+          </div>
+          <div class="theme">
+            <div>暗色模式</div>
+            <a-switch v-model:checked="theme" checkedValue="dark" unCheckedValue="light">
+              <template #unCheckedChildren><IconSun /></template>
+              <template #checkedChildren><IconMoon /></template>
+            </a-switch>
           </div>
           <div class="options">
             <nuxt-link v-for="i in options" :key="i.name" class="item" :to="i.to">
@@ -116,6 +131,19 @@ const options = [
       .name {
         font-size: 12px;
       }
+    }
+  }
+  .theme {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    :deep(.ant-switch-inner) {
+      display: flex;
+      align-items: center;
+    }
+    :deep(.ant-switch-inner-unchecked) {
+      margin-top: 0;
     }
   }
   .options {
