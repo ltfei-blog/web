@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Star as IconStar, History as IconHistory, Tips as IconTips } from '@icon-park/vue-next'
+
 defineOptions({
   name: 'BNav'
 })
@@ -14,6 +16,23 @@ defineOptions({
     </nuxt-link>
     <div class="right-entry">
       <nav-user />
+      <!-- todo: 制作对应页面 修改链接 -->
+      <nuxt-link to="/user" class="icon-item">
+        <IconStar size="23" />
+        收藏
+      </nuxt-link>
+      <!-- todo: 制作对应页面 修改链接 -->
+      <nuxt-link to="/user" class="icon-item">
+        <IconHistory size="20" />
+        历史
+      </nuxt-link>
+      <!-- todo: 制作对应页面 修改链接 -->
+      <nuxt-link to="/user" class="icon-item">
+        <IconTips size="22" />
+        创作中心
+      </nuxt-link>
+
+      <a-button type="primary">投稿</a-button>
     </div>
   </nav>
 </template>
@@ -51,6 +70,15 @@ nav.b-nav {
       font-weight: 500;
       color: @text-color;
     }
+  }
+
+  .icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    // margin: 0 10px;
+    margin-right: 20px;
   }
 }
 </style>

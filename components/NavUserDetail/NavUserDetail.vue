@@ -93,7 +93,7 @@ const theme = inject<'dark' | 'light'>('themeMode')
 </style>
 <style lang="less" scoped>
 .nav-user-detail {
-  margin-right: 100px;
+  margin-right: 20px;
 
   .avatar-container {
     width: 50px;

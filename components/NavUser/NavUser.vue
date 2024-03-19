@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { User as IconUser } from '@icon-park/vue-next'
-import { BAvatar } from '@ltfei-blog/blogui'
 import { useUserStore } from '~/store/user'
 defineOptions({
   name: 'NavUser'
@@ -25,8 +24,6 @@ const { isLogin, user } = useUserStore()
         />
       </nuxt-link>
     </client-only>
-
-    <a-button type="primary">投稿</a-button>
   </div>
 </template>
 
