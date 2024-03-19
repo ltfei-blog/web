@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BAvatar } from '@ltfei-blog/blogui'
-import { User as IconUser } from '@icon-park/vue-next'
+import { User as IconUser, Editor as IconEditor } from '@icon-park/vue-next'
 defineOptions({
   name: 'NavUserDetail'
 })
@@ -13,6 +13,20 @@ defineProps<{
 }>()
 
 const visible = ref(false)
+
+const options = [
+  {
+    name: '个人主页',
+    icon: IconUser,
+    to: '/user'
+  },
+  // todo: 创作中心页面
+  {
+    name: '作品管理',
+    icon: IconEditor,
+    to: '/user'
+  }
+]
 </script>
 
 <template>
@@ -36,15 +50,15 @@ const visible = ref(false)
             </div>
           </div>
           <div class="options">
-            <div class="item" v-for="i in 4" :key="i">
+            <nuxt-link v-for="i in options" :key="i.name" class="item" :to="i.to">
               <div class="text">
                 <div class="icon">
-                  <IconUser theme="outline" size="16" fill="#333" />
+                  <component :is="i.icon"></component>
                 </div>
-                <div class="text">文字</div>
+                <div class="text">{{ i.name }}</div>
               </div>
               <span class="right">></span>
-            </div>
+            </nuxt-link>
           </div>
         </div>
       </template>
@@ -107,14 +121,18 @@ const visible = ref(false)
   .options {
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
     .item {
       width: 100%;
       display: flex;
       justify-content: space-between;
       height: 30px;
+      margin-top: 8px;
       .text {
         display: flex;
         align-items: center;
+        font-size: 16px;
+        margin-left: 3px;
       }
     }
   }
