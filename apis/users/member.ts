@@ -6,6 +6,7 @@ export interface MemberData {
   avatar: string
   city?: string
   gender?: string
+  desc: string
   register_date: number
   status?: number
   avatar_pendant?: string

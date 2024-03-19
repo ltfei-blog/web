@@ -54,6 +54,7 @@ const data = ref<MemberData>({
   avatar: '',
   get_likes: 0,
   id: 0,
+  desc: '',
   register_date: 0,
   followers: 0,
   following: 0
@@ -91,7 +92,7 @@ const activeKey = ref('1')
             </div>
             <div class="text">
               <div class="username">{{ data.username }}</div>
-              <div class="desc">简介...</div>
+              <div class="desc">{{ data.desc || '这家伙很懒，什么都没写' }}</div>
             </div>
           </div>
         </client-only>
