@@ -15,6 +15,7 @@ defineOptions({
       <div class="title">Ltfei Blog</div>
     </nuxt-link>
     <div class="right-entry">
+      <nav-search />
       <nav-user />
       <!-- todo: 制作对应页面 修改链接 -->
       <nuxt-link to="/user" class="icon-item">
