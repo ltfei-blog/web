@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { BCard, BCardFooterItem } from '@ltfei-blog/blogui'
-import { GoodTwo as IconGoodTwo, Comment as IconComment } from '@icon-park/vue-next'
+import {
+  GoodTwo as IconGoodTwo,
+  Comment as IconComment,
+  FileWord as IconFileWord,
+  Like as IconLike
+} from '@icon-park/vue-next'
 import {
   getPost as getPostApi,
   PostData,
@@ -38,7 +43,13 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
 
 <template>
   <a-tabs v-model:activeKey="activeKey" class="tabs">
-    <a-tab-pane key="1" tab="投稿">
+    <a-tab-pane key="1">
+      <template #tab>
+        <span>
+          <icon-file-word theme="filled" fill="rgb(64, 158, 255)" />
+          投稿
+        </span>
+      </template>
       <div class="tab tab-post">
         <b-card
           v-for="i in posts"
@@ -67,7 +78,13 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
         </b-card>
       </div>
     </a-tab-pane>
-    <a-tab-pane key="2" tab="喜欢" v-if="likes.length > 0">
+    <a-tab-pane key="2" v-if="likes.length > 0">
+      <template #tab>
+        <span>
+          <icon-like theme="filled" fill="red" />
+          喜欢
+        </span>
+      </template>
       <div class="tab tab-likes">
         <b-card
           v-for="i in likes"
@@ -114,6 +131,9 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
     background-color: @bg-color;
     z-index: 90;
     padding: 0 10px;
+  }
+  .i-icon {
+    display: inline;
   }
 
   .tab {
