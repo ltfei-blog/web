@@ -46,3 +46,37 @@ export const getPost = (id?: number): Response<PostData[]> => {
     }
   })
 }
+
+export interface LikesData {
+  id: number
+  articles: number
+  liked: boolean
+  user: number
+  create_time: number
+  last_edit_time: number
+  likes_count: number
+  comments_count: number
+  user_likes_data: Userlikesdata
+}
+
+interface Userlikesdata {
+  id: number
+  title: string
+  content: string
+  cover: string
+  desc: string
+  status: number
+  author: number
+  create_time: number
+  last_edit_time?: any
+}
+
+export const getLikes = (): Response<LikesData[]> => {
+  return axiosRequest({
+    url: '/users/member/getLikes',
+    method: 'post',
+    data: {
+      // id
+    }
+  })
+}
