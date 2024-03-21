@@ -24,9 +24,19 @@ export const useUserStore = () => {
     }
   }
 
+  /**
+   * 退出登录
+   * 清除 token 并刷新 store
+   */
+  const logOut = () => {
+    localStorage.removeItem('token')
+    isLogin.value = false
+  }
+
   return {
     isLogin,
     user,
-    useUserInfo
+    useUserInfo,
+    logOut
   }
 }

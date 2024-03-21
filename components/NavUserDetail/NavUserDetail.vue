@@ -4,8 +4,10 @@ import {
   User as IconUser,
   Editor as IconEditor,
   Moon as IconMoon,
-  Sun as IconSun
+  Sun as IconSun,
+  Logout as IconLogout
 } from '@icon-park/vue-next'
+import { useUserStore } from '~/store/user'
 
 defineOptions({
   name: 'NavUserDetail'
@@ -20,8 +22,15 @@ defineProps<{
 }>()
 
 const visible = ref(false)
+const { logOut } = useUserStore()
 
-const options = [
+const options: {
+  name: string
+  icon: Component
+  dividingLine?: boolean
+  to?: string
+  click?: () => void
+}[] = [
   {
     name: '个人主页',
     icon: IconUser,
@@ -32,6 +41,22 @@ const options = [
     name: '作品管理',
     icon: IconEditor,
     to: '/user'
+  },
+  {
+    name: '退出登录',
+    icon: IconLogout,
+    dividingLine: true,
+    click() {
+      Modal.confirm({
+        title: '确定要退出登录吗？',
+        cancelText: '取消',
+        okText: '确定',
+        onOk() {
+          logOut()
+          message.success('已退出登录')
+        }
+      })
+    }
   }
 ]
 
@@ -66,7 +91,14 @@ const theme = inject<'dark' | 'light'>('themeMode')
             </a-switch>
           </div>
           <div class="options">
-            <nuxt-link v-for="i in options" :key="i.name" class="item" :to="i.to">
+            <nuxt-link
+              v-for="i in options"
+              :key="i.name"
+              :to="i.to"
+              @click="i.click"
+              class="item"
+              :class="i.dividingLine ? 'dividing-line' : ''"
+            >
               <div class="text">
                 <div class="icon">
                   <component :is="i.icon"></component>
@@ -162,6 +194,10 @@ const theme = inject<'dark' | 'light'>('themeMode')
         align-items: center;
         font-size: 16px;
         margin-left: 3px;
+      }
+      &.dividing-line {
+        padding-top: 10px;
+        border-top: @text-color-disabled solid 1px;
       }
     }
   }
