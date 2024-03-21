@@ -39,10 +39,10 @@ watch(
 <template>
   <div class="page-search">
     <div class="search-input">
-      <nav-search v-model:keyword="keyword"></nav-search>
+      <search-input v-model:keyword="keyword" />
     </div>
 
-    <div class="result" v-if="(result && result.length > 0) || loading">
+    <div class="result" v-if="(result && result.length > 0) || loading || keyword == ''">
       <a-spin tip="Loading..." :spinning="loading">
         <b-card-one
           v-for="i in result"
@@ -87,7 +87,7 @@ watch(
   padding: 20px;
   box-sizing: border-box;
   .search-input {
-    :deep(.nav-search) {
+    :deep(.search-input) {
       --height: 32px;
     }
   }

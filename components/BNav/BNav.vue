@@ -17,7 +17,7 @@ const keyword = ref('')
       <div class="title">Ltfei Blog</div>
     </nuxt-link>
     <div class="right-entry">
-      <nav-search v-if="$route.path != '/search'" class="search" v-model:keyword="keyword" />
+      <search-input v-if="$route.path != '/search'" class="search" v-model:keyword="keyword" />
       <nav-user />
       <!-- todo: 制作对应页面 修改链接 -->
       <nuxt-link to="/user" class="icon-item">

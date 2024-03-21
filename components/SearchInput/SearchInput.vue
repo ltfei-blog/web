@@ -7,7 +7,7 @@ import xss from 'xss'
 import { useSearchHistoryStore } from '~/store/searchHistory'
 
 defineOptions({
-  name: 'NavSearch'
+  name: 'SearchInput'
 })
 
 const props = defineProps<{
@@ -82,9 +82,9 @@ const toSearch = (keywordString = keyword.value) => {
 </script>
 
 <template>
-  <div class="nav-search" :class="focus ? 'focus' : 'blur'">
+  <div class="search-input" :class="focus ? 'focus' : 'blur'">
     <div class="search-container" ref="searchContainerRef">
-      <div class="search-input">
+      <div class="search-input-container">
         <input
           type="text"
           v-model="keyword"
@@ -117,7 +117,7 @@ const toSearch = (keywordString = keyword.value) => {
 </template>
 
 <style lang="less" scoped>
-.nav-search {
+.search-input {
   --height: 28px;
   @height: var(--height);
   height: @height;
@@ -133,7 +133,7 @@ const toSearch = (keywordString = keyword.value) => {
     overflow: hidden;
     position: relative;
     z-index: 200;
-    .search-input {
+    .search-input-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
