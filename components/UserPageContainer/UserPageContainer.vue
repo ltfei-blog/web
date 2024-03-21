@@ -13,7 +13,7 @@ import {
   LikesData
 } from '~/apis/users/member'
 import { useUserStore } from '~/store/user'
-import { useHash } from './useHash'
+import { useHash, tabs } from './useHash'
 
 defineOptions({
   name: 'UserPageContainer'
@@ -44,6 +44,8 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
 </script>
 
 <template>
+  <!-- 隐藏锚点元素，避免vue-router警告找不到对应元素 -->
+  <h6 v-for="i in tabs" :key="i" :id="i" style="display: none"></h6>
   <a-tabs v-model:activeKey="activeKey" class="tabs">
     <a-tab-pane key="post">
       <template #tab>

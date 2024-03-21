@@ -145,6 +145,7 @@ data.value &&
   .user {
     background-color: @bg-color;
     width: 100%;
+    height: 115px;
     padding: 15px;
     display: flex;
     flex-direction: column;
