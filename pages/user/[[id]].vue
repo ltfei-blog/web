@@ -105,7 +105,6 @@ data.value &&
         </client-only>
         <div class="operation">
           <client-only>
-            <!--  -->
             <EditUserInfo v-if="id == user.id.toString()">
               <a-button>编辑资料</a-button>
             </EditUserInfo>

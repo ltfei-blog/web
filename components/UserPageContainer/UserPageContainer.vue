@@ -13,6 +13,7 @@ import {
   LikesData
 } from '~/apis/users/member'
 import { useUserStore } from '~/store/user'
+import { useHash } from './useHash'
 
 defineOptions({
   name: 'UserPageContainer'
@@ -21,7 +22,8 @@ const { isLogin, user } = useUserStore()
 const route = useRoute()
 const id = route.params.id as string
 
-const activeKey = ref('1')
+// const activeKey = ref('1')
+const { activeKey } = useHash()
 
 const posts = ref<PostData[]>([])
 const likes = ref<LikesData[]>([])
@@ -43,7 +45,7 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
 
 <template>
   <a-tabs v-model:activeKey="activeKey" class="tabs">
-    <a-tab-pane key="1">
+    <a-tab-pane key="post">
       <template #tab>
         <span>
           <icon-file-word theme="filled" fill="rgb(64, 158, 255)" />
@@ -78,7 +80,7 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
         </b-card>
       </div>
     </a-tab-pane>
-    <a-tab-pane key="2" v-if="likes.length > 0">
+    <a-tab-pane key="like" v-if="likes.length > 0">
       <template #tab>
         <span>
           <icon-like theme="filled" fill="red" />
