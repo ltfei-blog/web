@@ -16,7 +16,7 @@ export const useSearchHistoryStore = defineStore(
         return e.keyword == keyword
       })
       // 先删掉旧的，然后新增
-      history.value.splice(item, 1)
+      item >= 0 && history.value.splice(item, 1)
 
       // 不存在新增
       history.value.push({

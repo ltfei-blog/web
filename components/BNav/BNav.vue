@@ -4,6 +4,8 @@ import { Star as IconStar, History as IconHistory, Tips as IconTips } from '@ico
 defineOptions({
   name: 'BNav'
 })
+
+const keyword = ref('')
 </script>
 
 <template>
@@ -15,7 +17,7 @@ defineOptions({
       <div class="title">Ltfei Blog</div>
     </nuxt-link>
     <div class="right-entry">
-      <nav-search />
+      <nav-search v-if="$route.path != '/search'" class="search" v-model:keyword="keyword" />
       <nav-user />
       <!-- todo: 制作对应页面 修改链接 -->
       <nuxt-link to="/user" class="icon-item">
@@ -54,6 +56,10 @@ nav.b-nav {
   .right-entry {
     display: flex;
     align-items: center;
+    .search {
+      width: 260px;
+      z-index: 300;
+    }
   }
   .left-entry {
     .logo {
