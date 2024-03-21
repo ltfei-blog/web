@@ -4,6 +4,7 @@ import { search as searchApi } from '~/apis/articles/search'
 import { Articles } from '~/types/api'
 import { throttle } from '~/utils/throttle'
 import xss from 'xss'
+import { useSearchHistoryStore } from '~/store/searchHistory'
 
 defineOptions({
   name: 'NavSearch'
@@ -12,10 +13,15 @@ defineOptions({
 const keyword = ref('')
 const focus = ref(false)
 const result = ref<Articles[]>([])
+const { history, addHistory, removeHistory } = useSearchHistoryStore()
 
 const search = async () => {
   const res = await searchApi(keyword.value)
-  result.value = res.data
+  result.value = res.data || []
+
+  // todo: 应该跳转详情页时添加历史记录，暂时放这里
+  // todo: 搜索详情页
+  addHistory(keyword.value)
 }
 
 watch(keyword, throttle(search, 1000))
@@ -32,14 +38,25 @@ const highlightKeyword = (text: string) => {
   <div class="nav-search" :class="focus ? 'focus' : 'blur'">
     <div class="search-container">
       <div class="search-input">
+        <!-- todo: click out side -->
         <input type="text" v-model="keyword" @focus="focus = true" @blur="focus = false" />
         <icon-search />
       </div>
-      <div class="result">
+      <div class="result" v-if="result.length && result.length > 0">
         <nuxt-link class="item" v-for="i in result" :key="i.id" :to="`/p/${i.id}`">
           <div class="name" v-html="highlightKeyword(i.title)"></div>
           <div class="desc" v-html="highlightKeyword(i.desc)"></div>
         </nuxt-link>
+      </div>
+      <div class="history" v-else>
+        <template v-for="(i, index) in history" :key="index">
+          <nuxt-link class="item" :to="`/search?w=${i.keyword}`">
+            <!-- todo: 点击时置顶 -->
+            <a-tag closable @close="removeHistory(i.keyword)">
+              {{ i.keyword }}
+            </a-tag>
+          </nuxt-link>
+        </template>
       </div>
     </div>
   </div>
@@ -96,6 +113,13 @@ const highlightKeyword = (text: string) => {
         .desc {
           font-size: 14px;
         }
+      }
+    }
+    .history {
+      display: flex;
+      flex-wrap: wrap;
+      .item {
+        margin: 4px;
       }
     }
   }
