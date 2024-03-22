@@ -3,11 +3,11 @@ import '@kangc/v-md-editor/lib/style/preview.css'
 import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress'
 import '@kangc/v-md-editor/lib/theme/style/vuepress.css'
 
-// highlightjs
-import hljs from 'highlight.js'
+import Prism from 'prismjs'
+import 'prismjs/components/prism-json'
 
 VMdPreview.use(vuepressTheme, {
-  Hljs: hljs
+  Prism
 })
 
 export default VMdPreview

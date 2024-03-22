@@ -35,7 +35,9 @@ const keyword = ref('')
         创作中心
       </nuxt-link>
 
-      <a-button type="primary">投稿</a-button>
+      <nuxt-link to="/edit">
+        <a-button type="primary">投稿</a-button>
+      </nuxt-link>
     </div>
   </nav>
 </template>

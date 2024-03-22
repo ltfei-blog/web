@@ -128,10 +128,10 @@ const init = async () => {
    */
   if (res.data?.edit) {
     const { title, content, desc, cover } = res.data.edit
-    data.title = title
-    data.content = content
-    data.desc = desc
-    data.cover = cover
+    data.title = title || ''
+    data.content = content || ''
+    data.desc = desc || ''
+    data.cover = cover || undefined
     message.info('已加载上次编辑的草稿')
     return
   }
@@ -140,10 +140,10 @@ const init = async () => {
    */
   if (res.data?.article) {
     const { title, content, desc, cover } = res.data.article
-    data.title = title
-    data.content = content
-    data.desc = desc
-    data.cover = cover
+    data.title = title || ''
+    data.content = content || ''
+    data.desc = desc || ''
+    data.cover = cover || undefined
     return
   }
 }
