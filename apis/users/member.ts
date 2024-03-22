@@ -1,4 +1,5 @@
 import axiosRequest, { type Response } from '~/utils/request'
+import { Articles } from '~/types/api'
 
 export interface MemberData {
   id: number
@@ -56,19 +57,7 @@ export interface LikesData {
   last_edit_time: number
   likes_count: number
   comments_count: number
-  user_likes_data: Userlikesdata
-}
-
-interface Userlikesdata {
-  id: number
-  title: string
-  content: string
-  cover: string
-  desc: string
-  status: number
-  author: number
-  create_time: number
-  last_edit_time?: any
+  user_likes_data: Articles
 }
 
 export const getLikes = (): Response<LikesData[]> => {

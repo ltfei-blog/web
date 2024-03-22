@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BCard, BCardFooterItem } from '@ltfei-blog/blogui'
+import { BCard, BCardOne, BCardFooterItem } from '@ltfei-blog/blogui'
 import {
   GoodTwo as IconGoodTwo,
   Comment as IconComment,
@@ -22,7 +22,6 @@ const { isLogin, user } = useUserStore()
 const route = useRoute()
 const id = route.params.id as string
 
-// const activeKey = ref('1')
 const { activeKey } = useHash()
 
 const posts = ref<PostData[]>([])
@@ -44,7 +43,7 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
 </script>
 
 <template>
-  <!-- 隐藏锚点元素，避免vue-router警告找不到对应元素 -->
+  <!-- 隐藏的锚点元素，避免vue-router警告找不到对应元素 -->
   <h6 v-for="i in tabs" :key="i" :id="i" style="display: none"></h6>
   <a-tabs v-model:activeKey="activeKey" class="tabs">
     <a-tab-pane key="post">
@@ -90,17 +89,17 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
         </span>
       </template>
       <div class="tab tab-likes">
-        <b-card
+        <b-card-one
           v-for="i in likes"
           :key="i.id"
           :title="i.user_likes_data.title"
           :to="`/p/${i.id}`"
           router
-          :auto-collapse="470"
           :desc="i.user_likes_data.desc"
-          :viewUser="false"
           :cover="i.user_likes_data.cover"
           :date="i.create_time"
+          :username="i.user_likes_data.author_data.username"
+          :avatar="i.user_likes_data.author_data.avatar"
         >
           <template #footer>
             <b-card-footer-item :text="i.likes_count?.toString() || '0'">
@@ -114,7 +113,7 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
               </template>
             </b-card-footer-item>
           </template>
-        </b-card>
+        </b-card-one>
       </div>
     </a-tab-pane>
 
