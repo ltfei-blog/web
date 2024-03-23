@@ -7,6 +7,10 @@ defineOptions({
   name: 'PageIndex'
 })
 
+useSeoMeta({
+  title: 'ltfei-blog'
+})
+
 const data = await useAsyncData('getArticles', () => listApi())
 </script>
 
