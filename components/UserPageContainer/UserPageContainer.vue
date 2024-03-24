@@ -4,13 +4,16 @@ import {
   GoodTwo as IconGoodTwo,
   Comment as IconComment,
   FileWord as IconFileWord,
-  Like as IconLike
+  Like as IconLike,
+  History as IconHistory
 } from '@icon-park/vue-next'
 import {
   getPost as getPostApi,
-  PostData,
+  type PostData,
   getLikes as getLikesApi,
-  LikesData
+  type LikesData,
+  getHistory as getHistoryApi,
+  type HistoryData
 } from '~/apis/users/member'
 import { useUserStore } from '~/store/user'
 import { useHash, tabs } from './useHash'
@@ -26,6 +29,7 @@ const { activeKey } = useHash()
 
 const posts = ref<PostData[]>([])
 const likes = ref<LikesData[]>([])
+const history = ref<HistoryData[]>([])
 
 const getPosts = async () => {
   const postsData = await getPostApi(Number(id))
@@ -37,8 +41,15 @@ const getLikes = async () => {
   const res = await getLikesApi()
   likes.value = res.data
 }
+
+const getHistory = async () => {
+  const res = await getHistoryApi()
+  history.value = res.data
+}
+
 if (process.client && isLogin.value && id == user.value.id.toString()) {
   getLikes()
+  getHistory()
 }
 </script>
 
@@ -116,9 +127,41 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
         </b-card-one>
       </div>
     </a-tab-pane>
-
-    <!-- <a-tab-pane key="2" tab="Tab 2" force-render>Content of Tab Pane 2</a-tab-pane>
-        <a-tab-pane key="3" tab="Tab 3">Content of Tab Pane 3</a-tab-pane> -->
+    <a-tab-pane key="history" v-if="history.length > 0">
+      <template #tab>
+        <span>
+          <icon-history theme="filled" fill="var(--text-color)" />
+          历史记录
+        </span>
+      </template>
+      <div class="tab tab-history">
+        <b-card-one
+          v-for="{ browsing_history_article_data: article } in history"
+          :key="article.id"
+          :title="article.title"
+          :to="`/p/${article.id}`"
+          router
+          :desc="article.desc"
+          :cover="article.cover"
+          :date="article.create_time"
+          :username="article.author_data.username"
+          :avatar="article.author_data.avatar"
+        >
+          <template #footer>
+            <b-card-footer-item :text="article.likes_count?.toString() || '0'">
+              <template #icon>
+                <icon-good-two size="16" />
+              </template>
+            </b-card-footer-item>
+            <b-card-footer-item :text="article.comments_count.toString()">
+              <template #icon>
+                <icon-comment size="16" />
+              </template>
+            </b-card-footer-item>
+          </template>
+        </b-card-one>
+      </div>
+    </a-tab-pane>
   </a-tabs>
 </template>
 

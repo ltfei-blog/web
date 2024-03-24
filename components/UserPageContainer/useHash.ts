@@ -1,6 +1,6 @@
 import { scrollTo } from '~/utils/scrollTo'
 
-export const tabs = ['post', 'like']
+export const tabs = ['post', 'like', 'history']
 export const useHash = (defaultTab = tabs[0]) => {
   const activeKey = ref(defaultTab)
   const { hash } = useRequestURL()

@@ -69,3 +69,18 @@ export const getLikes = (): Response<LikesData[]> => {
     }
   })
 }
+
+export interface HistoryData {
+  id: number
+  user_id: number
+  article_id: number
+  create_time: number
+  last_edit_time: number
+  browsing_history_article_data: Articles
+}
+export const getHistory = (): Response<HistoryData[]> => {
+  return axiosRequest({
+    url: '/users/member/getHistory',
+    method: 'post'
+  })
+}
