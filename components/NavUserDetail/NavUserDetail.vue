@@ -61,11 +61,22 @@ const options: {
 ]
 
 const theme = inject<'dark' | 'light'>('themeMode')
+
+const navUserDetailRef = ref()
+const getPopupContainer = () => {
+  return navUserDetailRef.value
+}
 </script>
 
 <template>
-  <div class="nav-user-detail">
-    <a-tooltip v-model:open="visible" color="var(--bg-color)" overlayClassName="tooltip-overlay">
+  <div class="nav-user-detail" ref="navUserDetailRef">
+    <a-tooltip
+      v-model:open="visible"
+      color="var(--bg-color)"
+      overlayClassName="tooltip-overlay"
+      placement="bottom"
+      :getPopupContainer="getPopupContainer"
+    >
       <template #title>
         <div class="detail">
           <div class="username">{{ username }}</div>
@@ -132,6 +143,8 @@ const theme = inject<'dark' | 'light'>('themeMode')
     height: 50px;
     .avatar {
       transition: all 0.3s;
+      position: relative;
+      z-index: 200;
       &.open {
         transform-origin: top;
         transform: scale(1.6);
