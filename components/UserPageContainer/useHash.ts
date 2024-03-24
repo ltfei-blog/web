@@ -1,7 +1,7 @@
 import { scrollTo } from '~/utils/scrollTo'
 
 export const tabs = ['post', 'like']
-export const useHash = (defaultTab = 'post') => {
+export const useHash = (defaultTab = tabs[0]) => {
   const activeKey = ref(defaultTab)
   const { hash } = useRequestURL()
   const locationHash = hash.replace('#', '')
@@ -17,8 +17,10 @@ export const useHash = (defaultTab = 'post') => {
   onMounted(() => {
     if (tabs.includes(locationHash)) {
       activeKey.value = locationHash
+      scrollToNav()
+    } else {
+      location.hash = ''
     }
-    scrollToNav()
   })
 
   watch(activeKey, (newValue) => {
