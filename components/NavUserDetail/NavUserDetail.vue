@@ -150,6 +150,14 @@ const getPopupContainer = () => {
         transform: scale(1.6);
       }
     }
+    .min-width(400px, {
+      width: 40px;
+      height: 40px;
+      .avatar {
+        width: 40px;
+        height: 40px;
+      }
+    });
   }
 }
 .detail {

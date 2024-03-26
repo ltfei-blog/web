@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { Star as IconStar, History as IconHistory, Tips as IconTips } from '@icon-park/vue-next'
+import {
+  Star as IconStar,
+  Like as IconLike,
+  History as IconHistory,
+  Tips as IconTips,
+  Search as IconSearch
+} from '@icon-park/vue-next'
 
 defineOptions({
   name: 'BNav'
@@ -17,22 +23,27 @@ const keyword = ref('')
       <div class="title">Ltfei Blog</div>
     </nuxt-link>
     <div class="right-entry">
-      <search-input v-if="$route.path != '/search'" class="search" v-model:keyword="keyword" />
+      <div class="search" v-if="$route.path != '/search'">
+        <search-input class="search-input" v-model:keyword="keyword" />
+        <nuxt-link to="/search?w=" class="search-icon">
+          <icon-search size="26" />
+        </nuxt-link>
+      </div>
       <nav-user />
-      <!-- todo: 制作对应页面 修改链接 -->
-      <nuxt-link to="/user" class="icon-item">
-        <IconStar size="23" />
-        收藏
+      <!-- todo: 制作收藏页面 修改链接 -->
+      <nuxt-link to="/user#like" class="icon-item">
+        <IconLike size="21" />
+        <!-- <IconStar size="23" /> -->
+        <span class="text">喜欢</span>
       </nuxt-link>
-      <!-- todo: 制作对应页面 修改链接 -->
-      <nuxt-link to="/user" class="icon-item">
+      <nuxt-link to="/user#history" class="icon-item">
         <IconHistory size="20" />
-        历史
+        <span class="text">历史</span>
       </nuxt-link>
       <!-- todo: 制作对应页面 修改链接 -->
       <nuxt-link to="/user" class="icon-item">
         <IconTips size="22" />
-        创作中心
+        <span class="text">创作中心</span>
       </nuxt-link>
 
       <nuxt-link to="/edit">
@@ -59,8 +70,28 @@ nav.b-nav {
     display: flex;
     align-items: center;
     .search {
-      width: 260px;
-      z-index: 300;
+      .search-input {
+        width: 260px;
+      }
+      .search-icon {
+        display: none;
+        padding: 20px;
+        cursor: pointer;
+      }
+      .min-width(750px, {
+        .search-input {
+          display: none;
+        }
+        .search-icon {
+          display: block;
+        }
+      });
+      .min-width(600px, {
+        .search-icon {
+          display: block;
+          padding: 10px;
+        }
+      });
     }
   }
   .left-entry {
@@ -79,6 +110,15 @@ nav.b-nav {
       font-weight: 500;
       color: @text-color;
     }
+    .min-width(400px, {
+      .title {
+        font-size: 16px
+      }
+      .logo {
+        width: 40px;
+        height: 40px;
+      }
+    });
   }
 
   .icon-item {
@@ -88,6 +128,16 @@ nav.b-nav {
     font-size: 14px;
     // margin: 0 10px;
     margin-right: 20px;
+    .min-width(560px, {
+      span.text {
+        background-color: red;
+        display: none
+      }
+    });
+    .min-width(495px, {
+      display: none;
+      // margin-right: 10px;
+    });
   }
 }
 </style>

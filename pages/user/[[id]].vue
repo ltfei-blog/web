@@ -30,7 +30,8 @@ definePageMeta({
       // 已经登录了的 跳转到自己的主页
       if (!id) {
         return navigateTo({
-          path: '/user/' + user.value.id
+          path: '/user/' + user.value.id,
+          hash: to.hash
         })
       }
 
