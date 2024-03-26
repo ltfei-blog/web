@@ -17,6 +17,7 @@ import {
 } from '~/apis/users/member'
 import { useUserStore } from '~/store/user'
 import { useHash, tabs } from './useHash'
+import { formatDate } from '~/utils/dayjs'
 
 defineOptions({
   name: 'UserPageContainer'
@@ -135,31 +136,38 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
         </span>
       </template>
       <div class="tab tab-history">
-        <b-card-one
-          v-for="{ browsing_history_article_data: article } in history"
+        <div
+          class="item"
+          v-for="{ browsing_history_article_data: article, last_edit_time } in history"
           :key="article.id"
-          :title="article.title"
-          :to="`/p/${article.id}`"
-          router
-          :desc="article.desc"
-          :cover="article.cover"
-          :date="article.create_time"
-          :username="article.author_data.username"
-          :avatar="article.author_data.avatar"
         >
-          <template #footer>
-            <b-card-footer-item :text="article.likes_count?.toString() || '0'">
-              <template #icon>
-                <icon-good-two size="16" />
-              </template>
-            </b-card-footer-item>
-            <b-card-footer-item :text="article.comments_count.toString()">
-              <template #icon>
-                <icon-comment size="16" />
-              </template>
-            </b-card-footer-item>
-          </template>
-        </b-card-one>
+          <div class="time">
+            {{ formatDate(last_edit_time) }}
+          </div>
+          <b-card-one
+            :title="article.title"
+            :to="`/p/${article.id}`"
+            router
+            :desc="article.desc"
+            :cover="article.cover"
+            :date="article.create_time"
+            :username="article.author_data.username"
+            :avatar="article.author_data.avatar"
+          >
+            <template #footer>
+              <b-card-footer-item :text="article.likes_count?.toString() || '0'">
+                <template #icon>
+                  <icon-good-two size="16" />
+                </template>
+              </b-card-footer-item>
+              <b-card-footer-item :text="article.comments_count.toString()">
+                <template #icon>
+                  <icon-comment size="16" />
+                </template>
+              </b-card-footer-item>
+            </template>
+          </b-card-one>
+        </div>
       </div>
     </a-tab-pane>
   </a-tabs>
@@ -189,6 +197,23 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
       padding: 8px 20px;
       border-bottom: @black-opacity-1 1px solid;
       border-radius: 0px;
+    }
+  }
+  .tab-history {
+    .item {
+      display: flex;
+      .time {
+        width: 70px;
+        padding: 0 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid @black-opacity-1;
+      }
+      .b-card {
+        flex: 1;
+        border: none;
+      }
     }
   }
 }
