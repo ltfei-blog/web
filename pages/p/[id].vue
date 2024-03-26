@@ -51,7 +51,7 @@ useSeoMeta({
   padding: 20px;
   transition: all 0.3s;
   .min-width(700px, {
-    padding: 20px 0;
+    padding: 20px 8px;
 
   });
 }

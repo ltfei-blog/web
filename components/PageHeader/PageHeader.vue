@@ -43,11 +43,16 @@ defineProps<{
 .author {
   padding: 0 32px;
   box-sizing: border-box;
+  .min-width(700px, {
+    padding: 0 8px;
+  });
 }
+
 .title {
   font-size: 28px;
   font-weight: 700;
 }
+
 .info {
   font-size: 14px;
   margin-top: 10px;
