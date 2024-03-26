@@ -133,7 +133,7 @@ data.value &&
     </div>
     <div class="container">
       <UserPageContainer />
-      <div class="sidebar"></div>
+      <UserPageSidebar class="sidebar" />
     </div>
   </div>
 </template>
@@ -202,11 +202,11 @@ data.value &&
   .container {
     margin-top: 10px;
     display: flex;
-
+    align-items: flex-start;
     .sidebar {
-      background-color: @bg-color;
-      width: 200px;
-      margin-left: 10px;
+      .min-width(700px, {
+        display: none;
+      });
     }
   }
 }
