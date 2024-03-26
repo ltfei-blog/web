@@ -12,7 +12,7 @@ const { isLogin, user } = useUserStore()
   <div class="nav-user">
     <client-only>
       <nuxt-link v-if="!isLogin" to="/login" class="to-login-icon">
-        <icon-user></icon-user>
+        <icon-user size="20"></icon-user>
       </nuxt-link>
       <nuxt-link v-else :to="`/user/${user.id}`">
         <NavUserDetail
@@ -33,8 +33,9 @@ const { isLogin, user } = useUserStore()
   align-items: center;
 }
 .to-login-icon {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
   color: @text-color;
   border: 1px solid @text-color;
   border-radius: 50%;
