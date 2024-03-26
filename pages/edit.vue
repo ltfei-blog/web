@@ -403,38 +403,33 @@ const beforeCoverUpload: UploadProps['beforeUpload'] = async (file) => {
             </div>
           </a-form-item>
           <h2>封面和摘要</h2>
-          <a-row :gutter="10">
-            <a-col class="grid-content" :span="5">
-              <a-upload
-                class="upload"
-                list-type="picture-card"
-                :before-upload="beforeCoverUpload"
-                :show-upload-list="false"
-              >
-                <a-image
-                  v-if="data.cover"
-                  :src="data.cover"
-                  fit="cover"
-                  class="cover"
-                  :preview="false"
-                />
-                <div v-else class="not_image">
-                  <icon-upload size="35"></icon-upload>
-                  拖拽或选择封面
-                </div>
-              </a-upload>
-            </a-col>
-            <a-col class="grid-content" :span="19">
-              <a-form-item name="desc">
-                <a-textarea
-                  class="desc"
-                  v-model:value="data.desc"
-                  show-count
-                  :maxlength="rules.desc.max"
-                ></a-textarea>
-              </a-form-item>
-            </a-col>
-          </a-row>
+          <div class="cover-and-desc">
+            <a-upload
+              class="upload"
+              list-type="picture-card"
+              :before-upload="beforeCoverUpload"
+              :show-upload-list="false"
+            >
+              <a-image
+                v-if="data.cover"
+                :src="data.cover"
+                fit="cover"
+                class="cover"
+                :preview="false"
+              />
+              <div v-else class="not_image">
+                <icon-upload size="35"></icon-upload>
+                拖拽或选择封面
+              </div>
+            </a-upload>
+            <a-form-item class="desc" name="desc">
+              <a-textarea
+                v-model:value="data.desc"
+                show-count
+                :maxlength="rules.desc.max"
+              ></a-textarea>
+            </a-form-item>
+          </div>
           <h2>文章设置</h2>
           <div class="unfinished">开发中,敬请期待</div>
           <a-form-item>
@@ -458,7 +453,6 @@ const beforeCoverUpload: UploadProps['beforeUpload'] = async (file) => {
       </a-spin>
     </client-only>
   </div>
-  <!-- <EditLevalFooter :open="levalModel" /> -->
 </template>
 
 <style lang="less" scoped>
@@ -481,37 +475,46 @@ const beforeCoverUpload: UploadProps['beforeUpload'] = async (file) => {
     font-size: 18px;
     margin: 20px 0 10px 0;
   }
-  .upload {
-    :deep(.ant-upload) {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100px;
-      border-radius: 5px;
-      .ant-image {
-        display: block;
+  .cover-and-desc {
+    display: flex;
+    flex-wrap: wrap;
+    .upload {
+      width: 160px;
+      margin-right: 10px;
+      :deep(.ant-upload) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         width: 100%;
-        height: 100%;
-        img {
+        height: 100px;
+        border-radius: 5px;
+        .ant-image {
+          display: block;
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
         }
       }
+      .not_image {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
     }
-    .not_image {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-  .desc {
-    height: 100px;
-    :deep(textarea) {
-      resize: none;
+    .desc {
+      flex: 1;
+      height: 100px;
+      :deep(textarea) {
+        height: 100px;
+        min-width: 280px;
+        resize: none;
+      }
     }
   }
   .unfinished {
