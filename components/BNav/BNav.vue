@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  Star as IconStar,
+  // Star as IconStar,
   Like as IconLike,
   History as IconHistory,
   Tips as IconTips,

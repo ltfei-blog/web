@@ -66,6 +66,14 @@ const navUserDetailRef = ref()
 const getPopupContainer = () => {
   return navUserDetailRef.value
 }
+
+const { width, height } = useWindowSize()
+const screenProportion = computed(() => {
+  return width.value / height.value
+})
+const isMobile = computed(() => {
+  return screenProportion.value < 0.7
+})
 </script>
 
 <template>
@@ -76,6 +84,7 @@ const getPopupContainer = () => {
       overlayClassName="tooltip-overlay"
       placement="bottom"
       :getPopupContainer="getPopupContainer"
+      :trigger="isMobile ? 'click' : 'hover'"
     >
       <template #title>
         <div class="detail">
