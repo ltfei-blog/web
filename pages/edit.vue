@@ -237,6 +237,7 @@ const watchEdit = () => {
     stop()
   })
 }
+watchEdit()
 
 /**
  * 通过vue-router跳转路由时的提示
