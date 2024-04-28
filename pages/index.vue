@@ -2,6 +2,7 @@
 import { BCard, BCardFooterItem } from '@ltfei-blog/blogui'
 import { list as listApi } from '~/apis/articles/list'
 import { GoodTwo as IconGoodTwo, Comment as IconComment } from '@icon-park/vue-next'
+import { Articles } from '~/types/api'
 
 defineOptions({
   name: 'PageIndex'
@@ -11,15 +12,46 @@ useSeoMeta({
   title: 'ltfei-blog'
 })
 
-const data = await useAsyncData('getArticles', () => listApi())
+const count = ref(10)
+const page = ref(0)
+const list = ref<Articles[]>([])
+const indexRef = ref<HTMLElement | null>()
+const loading = ref(false)
+const noMore = ref(false)
+
+const getArticles = async () => {
+  loading.value = true
+  const res = await listApi(count.value, page.value * count.value)
+  list.value.push(...res.data)
+  if (res.data.length == 0) {
+    noMore.value = true
+  }
+  loading.value = false
+}
+getArticles()
+
+onMounted(() => {
+  useInfiniteScroll(
+    indexRef,
+    async () => {
+      if (loading.value || noMore.value) {
+        return
+      }
+      page.value += 1
+      await getArticles()
+    },
+    {
+      distance: 10
+    }
+  )
+})
 </script>
 
 <template>
-  <!-- card demo -->
-  <div class="index">
+  <div class="index" ref="indexRef">
     <div class="cards">
       <b-card
-        v-for="i in data.data.value?.data"
+        v-for="i in list"
         :key="i.id"
         :title="i.title"
         :to="`/p/${i.id}`"
@@ -44,6 +76,8 @@ const data = await useAsyncData('getArticles', () => listApi())
           </b-card-footer-item>
         </template>
       </b-card>
+      <div class="tip" v-if="loading">正在加载……</div>
+      <div class="tip" v-else-if="noMore">没有更多了</div>
     </div>
     <div class="sidebar">
       <index-sidebar />
@@ -56,10 +90,18 @@ const data = await useAsyncData('getArticles', () => listApi())
   display: flex;
   width: 100%;
   justify-content: center;
+  height: 100vh;
+  overflow: auto;
   .cards {
     width: 100%;
     max-width: 800px;
     margin: 0 8px;
+
+    .tip {
+      text-align: center;
+      padding: 20px 0;
+      color: @text-color-placeholder;
+    }
   }
 
   .sidebar {

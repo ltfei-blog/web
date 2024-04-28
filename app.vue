@@ -14,7 +14,7 @@ provide('themeMode', mode)
 </script>
 
 <template>
-  <div>
+  <div class="app">
     <a-config-provider
       :theme="{
         token: {
@@ -29,4 +29,10 @@ provide('themeMode', mode)
   </div>
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+</style>
