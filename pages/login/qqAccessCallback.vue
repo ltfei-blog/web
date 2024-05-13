@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { qqConnectLogin } from '~/apis/users/login'
+import { qqConnectLogin } from 'apis/login/login'
 import { getUserInfo } from '~/utils/userInfo'
 defineOptions({
   name: 'qqAccessCallback'

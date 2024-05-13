@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import {
-  init as initApi,
-  getQqConnectUrl as qqConnectLoginApi,
-  getStatus as getStatusApi,
-  loginStatus
-} from '~/apis/users/login'
-import { getQrCode } from '~/apis/users/wxLogin'
+import { init as initApi, getStatus as getStatusApi, loginStatus } from '~/apis/login/login'
+import { getQqConnectUrl as qqConnectLoginApi } from '~/apis/login/qqConnectLogin'
+import { getQrCode } from '~/apis/login/wxLogin'
 import {
   CheckOne as IconCheckOne,
   EmotionUnhappy as IconEmotionUnhappy,
