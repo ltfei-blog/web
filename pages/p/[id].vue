@@ -43,6 +43,7 @@ useSeoMeta({
 
 <style lang="less" scoped>
 .page-p {
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
   min-height: 80vh;
