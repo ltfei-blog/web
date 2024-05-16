@@ -23,7 +23,9 @@ provide('themeMode', mode)
       }"
     >
       <NuxtLayout>
-        <NuxtPage />
+        <div class="page">
+          <NuxtPage />
+        </div>
       </NuxtLayout>
     </a-config-provider>
   </div>
@@ -34,5 +36,8 @@ provide('themeMode', mode)
   height: 100vh;
   display: flex;
   flex-direction: column;
+  .page {
+    overflow: auto;
+  }
 }
 </style>

@@ -55,7 +55,7 @@ onMounted(() => {
         :key="i.id"
         :title="i.title"
         :to="`/p/${i.id}`"
-        router
+        :router="true"
         :auto-collapse="470"
         :desc="i.desc"
         :username="i.author_data.username"
@@ -90,7 +90,7 @@ onMounted(() => {
   display: flex;
   width: 100%;
   justify-content: center;
-  height: 100vh;
+  // height: 100vh;
   overflow: auto;
   .cards {
     width: 100%;
