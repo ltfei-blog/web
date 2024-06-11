@@ -22,7 +22,7 @@ defineProps<{
 }>()
 
 const visible = ref(false)
-const { logOut } = useUserStore()
+const { logOut, user } = useUserStore()
 
 const options: {
   name: string
@@ -130,9 +130,11 @@ const isMobile = computed(() => {
           </div>
         </div>
       </template>
-      <div class="avatar-container">
-        <b-avatar class="avatar" :class="visible ? 'open' : 'hide'" :src="src"></b-avatar>
-      </div>
+      <nuxt-link :to="`/user/${user.id}`">
+        <div class="avatar-container">
+          <b-avatar class="avatar" :class="visible ? 'open' : 'hide'" :src="src"></b-avatar>
+        </div>
+      </nuxt-link>
     </a-tooltip>
   </div>
 </template>
