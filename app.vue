@@ -2,15 +2,23 @@
 import { useThemes } from '~/utils/theme'
 import { useUserStore } from '~/store/user'
 import '@ltfei-blog/blogui/dist/style.css'
+import { useViewLayerEvent } from '~/utils/useViewLayerEvent'
+
 defineOptions({
   name: 'app'
 })
+
 const appConfig = useAppConfig()
 const { theme, mode } = useThemes(appConfig.theme)
 const { useUserInfo } = useUserStore()
+
 useUserInfo()
 
 provide('themeMode', mode)
+
+onMounted(() => {
+  useViewLayerEvent()
+})
 </script>
 
 <template>
