@@ -74,7 +74,7 @@ data.value &&
           <div class="user-info">
             <div class="avatar">
               <nuxt-link v-if="!isLogin" to="/login" class="to-login-icon">
-                <icon-user></icon-user>
+                <icon-user size="22"></icon-user>
               </nuxt-link>
               <template v-else>
                 <b-avatar :src="data.avatar"></b-avatar>
@@ -160,7 +160,13 @@ data.value &&
       .user-info {
         display: flex;
         align-items: center;
-
+        .avatar {
+          width: 60px;
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
         .text {
           margin-left: 8px;
           .username {

@@ -181,7 +181,7 @@ if (process.client && isLogin.value && id == user.value.id.toString()) {
   // tab标签栏置顶
   :deep(.ant-tabs-nav) {
     position: sticky;
-    top: 60px;
+    top: 0;
     background-color: @bg-color;
     z-index: 90;
     padding: 0 10px;

@@ -25,7 +25,7 @@ defineOptions({
 .user-page-sidebar {
   width: 220px;
   position: sticky;
-  top: 70px;
+  top: 10px;
   margin-left: 10px;
 
   .creator {
