@@ -9,6 +9,7 @@ defineOptions({
 defineProps<{
   title: string
   date: number
+  authorId: number
   avatar: string
   username: string
   likes: number
@@ -23,7 +24,7 @@ defineProps<{
     <div>1095阅读 · {{ likes }}喜欢 · {{ comments }}评论</div>
   </div>
   <div class="author">
-    <div class="author-info">
+    <router-link :to="`/user/${authorId}`" class="author-info">
       <b-avatar class="avatar" :src="avatar"></b-avatar>
       <div class="author-user-info">
         <div class="name">{{ username }}</div>
@@ -32,7 +33,7 @@ defineProps<{
           <span>文章：1</span>
         </div>
       </div>
-    </div>
+    </router-link>
     <a-button type="primary">关注</a-button>
   </div>
 </template>

@@ -11,6 +11,13 @@ const id = Number(route.params.id as string)
 const res = await detailsApi(id)
 const data = reactive(res.data)
 
+if (!data) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Page Not Found'
+  })
+}
+
 useSeoMeta({
   title: `ltfei-blog ${data.title}`,
   description: data.desc,
@@ -19,10 +26,11 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="page-p">
+  <div class="page-p" v-if="data">
     <page-header
       :title="data.title!"
       :date="data.create_time"
+      :author-id="data.author"
       :avatar="data.author_data?.avatar"
       :username="data.author_data?.username"
       :likes="data.likes_count || 0"
@@ -33,6 +41,7 @@ useSeoMeta({
   </div>
   <client-only>
     <page-sidebar
+      v-if="data"
       :id="id"
       v-model:likes="data.likes_count"
       v-model:liked="data.liked"

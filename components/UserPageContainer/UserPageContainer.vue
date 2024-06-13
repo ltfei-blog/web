@@ -45,7 +45,7 @@ const getLikes = async () => {
 
 const getHistory = async () => {
   const res = await getHistoryApi()
-  history.value = res.data
+  history.value = res.data.reverse()
 }
 
 if (process.client && isLogin.value && id == user.value.id.toString()) {
