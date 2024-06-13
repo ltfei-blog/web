@@ -58,8 +58,8 @@ onMounted(() => {
         :router="true"
         :auto-collapse="470"
         :desc="i.desc"
-        :username="i.author_data.username"
-        :avatar="i.author_data.avatar"
+        :username="i.author_data?.username"
+        :avatar="i.author_data?.avatar"
         :cover="i.cover"
         :date="i.create_time"
       >

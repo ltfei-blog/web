@@ -23,8 +23,8 @@ useSeoMeta({
     <page-header
       :title="data.title!"
       :date="data.create_time"
-      :avatar="data.author_data.avatar"
-      :username="data.author_data.username"
+      :avatar="data.author_data?.avatar"
+      :username="data.author_data?.username"
       :likes="data.likes_count || 0"
       :comments="data.comments_count"
     />
