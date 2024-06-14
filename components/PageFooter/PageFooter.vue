@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BComment } from '@ltfei-blog/blogui'
+import { BComment, BIcon } from '@ltfei-blog/blogui'
 import type {
   FooterIconItemClickEvent,
   Comment,
@@ -9,10 +9,11 @@ import type {
 import { list as listApi } from '~/apis/comment/list'
 import { like as likeApi } from '~/apis/comment/like'
 import { publish as publishApi } from '~/apis/comment/publish'
-import { GoodTwo as IconGoodTwo } from '@icon-park/vue-next'
+import { GoodTwo as IconGoodTwo, MoreOne as IconMore } from '@icon-park/vue-next'
 import { useUserStore } from '~/store/user'
 import { on } from '~/components/PageSidebar/event'
 import { scrollTo } from '~/utils/scrollTo'
+import { openReport } from '~/components/Report'
 
 defineOptions({
   name: 'PageFooter'
@@ -153,6 +154,19 @@ on('toComment', () => {
          -->
         <icon-good-two v-show="row.liked" theme="filled" class="active" />
         <icon-good-two v-show="!row.liked" />
+      </template>
+      <template #footer="{ row }">
+        <a-tooltip placement="bottom" color="white">
+          <template #title>
+            <div class="report-content">
+              <a-button @click="openReport('comment', Number(row.id))">举报</a-button>
+              <!-- <a-button disabled>加入黑名单</a-button> -->
+            </div>
+          </template>
+          <b-icon :size="16">
+            <icon-more />
+          </b-icon>
+        </a-tooltip>
       </template>
     </b-comment>
   </div>

@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { GoodTwo as IconGoodTwo, Comment as IconComment } from '@icon-park/vue-next'
+import {
+  GoodTwo as IconGoodTwo,
+  Comment as IconComment,
+  Caution as IconReport
+} from '@icon-park/vue-next'
 import { like as likeApi } from '~/apis/articles/like'
 import { emit as emitEvent } from './event'
+import { openReport } from '~/components/Report'
 
 defineOptions({
   name: 'PageSidebar'
@@ -58,6 +63,10 @@ const like = async () => {
         <div class="comment item" @click="emitEvent('toComment')">
           <icon-comment size="26"></icon-comment>
           <div class="text">{{ comments }}</div>
+        </div>
+        <div class="comment item" @click="openReport('article', id)">
+          <icon-report size="26"></icon-report>
+          <div class="text">举报</div>
         </div>
         <!-- <div class="love"></div> -->
       </div>

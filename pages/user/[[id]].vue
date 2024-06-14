@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { BAvatar } from '@ltfei-blog/blogui'
 import { useUserStore } from '~/store/user'
-import { User as IconUser } from '@icon-park/vue-next'
+import {
+  User as IconUser,
+  MoreOne as IconMore,
+  Female as IconFemale,
+  Male as IconMale
+} from '@icon-park/vue-next'
 import { getMember as getMemberApi, MemberData } from '~/apis/users/member'
-import { Female as IconFemale, Male as IconMale } from '@icon-park/vue-next'
+import { openReport } from '~/components/Report'
 
 defineOptions({
   name: 'PageUser'
@@ -110,9 +115,21 @@ data.value &&
               <a-button>编辑资料</a-button>
             </EditUserInfo>
             <template v-else>
-              <a-button>关注</a-button>
+              <a-button type="primary">关注</a-button>
               <!-- <a-button>取消关注</a-button> -->
             </template>
+
+            <div class="report" v-if="id != user.id.toString()">
+              <a-tooltip placement="bottom" color="white">
+                <template #title>
+                  <div class="report-content">
+                    <a-button @click="openReport('user', user.id)">举报</a-button>
+                    <a-button disabled>加入黑名单</a-button>
+                  </div>
+                </template>
+                <icon-more size="24" />
+              </a-tooltip>
+            </div>
           </client-only>
         </div>
       </div>
@@ -183,6 +200,13 @@ data.value &&
           }
         }
       }
+      .operation {
+        display: flex;
+        align-items: center;
+        .report {
+          margin: 0 10px;
+        }
+      }
     }
     .data {
       align-self: flex-end;
@@ -215,5 +239,12 @@ data.value &&
       });
     }
   }
+}
+
+.report-content {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 6px;
 }
 </style>
