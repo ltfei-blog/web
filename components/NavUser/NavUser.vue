@@ -17,9 +17,9 @@ const { isLogin, user } = useUserStore()
       <NavUserDetail
         v-else
         :src="user.avatar"
-        :get_likes="user.get_likes"
-        :followers="user.followers"
-        :following="user.following"
+        :get_likes="user.get_likes || 0"
+        :followers="user.followers || 0"
+        :following="user.following || 0"
         :username="user.username"
       />
     </client-only>
