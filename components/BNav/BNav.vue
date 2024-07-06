@@ -18,7 +18,7 @@ const keyword = ref('')
   <nav class="b-nav">
     <nuxt-link to="/" class="left-entry">
       <div class="logo">
-        <img src="https://www.ltfei.cn/img/logo.d05ba22d.webp" alt="logo" />
+        <img src="assets/logo.webp" alt="logo" />
       </div>
       <div class="title">Ltfei Blog</div>
     </nuxt-link>
