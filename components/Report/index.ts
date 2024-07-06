@@ -1,5 +1,5 @@
 import { report as reportApi } from '~/apis/users/report'
-import Report from './Report.vue'
+import Report from './component.vue'
 
 export const openReport = (type: 'article' | 'comment' | 'user', report_id: number) => {
   const show = ref(false)
