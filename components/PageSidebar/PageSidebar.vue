@@ -50,11 +50,19 @@ const like = async () => {
     return message.error('点赞失败')
   }
 }
+
+const show = ref(true)
+document.body.addEventListener('touchstart', () => {
+  show.value = false
+})
+document.body.addEventListener('touchend', () => {
+  show.value = true
+})
 </script>
 
 <template>
   <div class="sidebar-container">
-    <div class="sidebar">
+    <div class="sidebar" :class="{ show }">
       <div class="box">
         <div class="like item" :class="liked ? 'liked' : ''" @click="like">
           <icon-good-two size="26"></icon-good-two>
@@ -92,6 +100,14 @@ const like = async () => {
   align-items: flex-end;
 
   pointer-events: none;
+  .sidebar {
+    opacity: 0;
+    transition: all 0.1s;
+    &.show {
+      opacity: 1;
+      transition: all 0.3s;
+    }
+  }
   .box {
     pointer-events: all;
     display: flex;
