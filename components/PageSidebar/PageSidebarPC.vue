@@ -4,60 +4,18 @@ import {
   Comment as IconComment,
   Caution as IconReport
 } from '@icon-park/vue-next'
-import { like as likeApi } from '~/apis/articles/like'
 import { emit as emitEvent } from './event'
 import { openReport } from '~/components/Report'
+import { usePageSidebar, type Props } from './usePageSidebar'
 
 defineOptions({
   name: 'PageSidebar'
 })
 
-const props = defineProps<{
-  id: number
-  likes: number | null
-  liked: boolean | number | null
-  comments: number
-}>()
-
+const props = defineProps<Props>()
 const emit = defineEmits(['update:likes', 'update:liked'])
 
-const likes = computed({
-  get() {
-    return props.likes || 0
-  },
-  set(value) {
-    console.log(value)
-
-    emit('update:likes', value)
-  }
-})
-const liked = computed({
-  get() {
-    return Boolean(props.liked)
-  },
-  set(value) {
-    emit('update:liked', value)
-  }
-})
-
-const like = async () => {
-  !liked.value ? likes.value++ : likes.value--
-
-  liked.value = !liked.value
-  const res = await likeApi(props.id)
-  if (res.status != 200) {
-    liked.value = res.data?.liked || liked.value
-    return message.error('点赞失败')
-  }
-}
-
-const show = ref(true)
-document.body.addEventListener('touchstart', () => {
-  show.value = false
-})
-document.body.addEventListener('touchend', () => {
-  show.value = true
-})
+const { likes, liked, like, show } = usePageSidebar(props, emit)
 </script>
 
 <template>

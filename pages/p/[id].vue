@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { details as detailsApi } from '~/apis/articles/details'
+import PageSidebarMobile from '@/components/PageSidebar/PageSidebarMobile.vue'
+import PageSidebarPC from '@/components/PageSidebar/PageSidebarPC.vue'
+import { isMobie } from '@/utils/isMobie'
 
 defineOptions({
   name: 'PageP'
@@ -40,8 +43,9 @@ useSeoMeta({
     <page-footer :id="id" :author="data.author" />
   </div>
   <client-only>
-    <page-sidebar
+    <component
       v-if="data"
+      :is="isMobie ? PageSidebarMobile : PageSidebarPC"
       :id="id"
       v-model:likes="data.likes_count"
       v-model:liked="data.liked"
