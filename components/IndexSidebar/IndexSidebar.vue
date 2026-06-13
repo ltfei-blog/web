@@ -12,9 +12,16 @@ defineOptions({
       <div class="subTitle">手机阅读更方便</div>
     </div>
   </div>
+  <div class="download component">
+    <div class="text">
+      <div class="title">下载客户端</div>
+      <!-- <div class="subTitle">手机阅读更方便</div> -->
+    </div>
+    <a-button @click="$router.push('/download')">去下载</a-button>
+  </div>
   <div class="footer component">
     <!-- todo: 动态获取 -->
-    <div class="copyright">&copy;2021-2024 litfa all rights reserved.</div>
+    <div class="copyright">&copy;2021-2026 litfa all rights reserved.</div>
     <a href="https://beian.miit.gov.cn/" target="_blank">豫ICP备2021024510号-3</a>
   </div>
 </template>
@@ -42,6 +49,22 @@ defineOptions({
     .subTitle {
       color: @text-color-regular;
       margin-top: 8px;
+    }
+  }
+}
+.download {
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .subTitle {
+      color: @text-color-regular;
+      margin-top: 4px;
     }
   }
 }
