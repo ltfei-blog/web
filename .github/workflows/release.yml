@@ -1,0 +1,36 @@
+name: Build & Release
+
+# 仅在推送 tag 时触发
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: 安装依赖
+        run: yarn install
+
+      - name: 执行打包
+        run: yarn build
+
+      - name: 上传打包产物 .output
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./output  # 你的打包目录名（注意大小写）
+          asset_name: output.zip
+          asset_content_type: application/zip
