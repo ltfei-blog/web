@@ -1,0 +1,40 @@
+name: Build & Release
+
+# 仅在推送 tag 时触发
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: 安装依赖
+        run: yarn install
+
+      - name: 执行打包
+        run: yarn build
+
+      # 压缩 .output 为 zip
+      - name: Zip output files
+        run: |
+          zip -r .output.zip .output/
+
+      # 创建 Release 并上传 zip 包
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: .output.zip
+          generate_release_notes: true # 自动生成更新日志
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
