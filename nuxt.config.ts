@@ -31,5 +31,10 @@ export default defineNuxtConfig({
     '/user': {
       ssr: false
     }
+  },
+  runtimeConfig: {
+    public: {
+      apiBase: '' // 自动读取 NUXT_PUBLIC_* 环境变量
+    }
   }
 })

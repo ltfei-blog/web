@@ -2,11 +2,7 @@ import axios from 'axios'
 import type { AxiosRequestConfig } from 'axios'
 import { emit } from '~/utils/eventbus'
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || ''
-
-const axiosRequest = axios.create({
-  baseURL: baseURL
-})
+const axiosRequest = axios.create()
 
 axiosRequest.interceptors.request.use((config) => {
   let token
@@ -41,7 +37,9 @@ axiosRequest.interceptors.response.use(
 )
 
 const request = async (AxiosRequestConfig: AxiosRequestConfig<any>) => {
-  const { data: res } = await axiosRequest(AxiosRequestConfig)
+  const config = useRuntimeConfig()
+  const baseURL = config.public.apiBase || ''
+  const { data: res } = await axiosRequest({ ...AxiosRequestConfig, baseURL: baseURL })
   return res
 }
 
